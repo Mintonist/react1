@@ -26,7 +26,7 @@ const Users = () => {
     users.length == 0
       ? 'никого здесь нет!'
       : declOfNum(users.length, ['человек', 'человека', 'человек'], true) +
-        ' вступили в секту';
+        (users.length === 1 ? ' вступил в секту' : ' вступили в секту');
 
   const renderRows = (arr: IUser[]) => {
     return arr.map((u) => (

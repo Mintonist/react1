@@ -16,23 +16,21 @@ const renderQualities = (arr: IQuality[]) => {
 
 const Row = (props: RowProps) => {
   return (
-    <>
-      <tr>
-        <th>{props.user.name}</th>
-        <th>{renderQualities(props.user.qualities)}</th>
-        <th>{props.user.profession.name}</th>
-        <th>{props.user.completedMeetings}</th>
-        <th>{props.user.rate}/5</th>
-        <th>
-          <span
-            className="btn btn-danger p-2"
-            onClick={() => props.onDelete(props.user._id)}
-          >
-            delete
-          </span>
-        </th>
-      </tr>
-    </>
+    <tr>
+      <th>{props.user.name}</th>
+      <th>{renderQualities(props.user.qualities)}</th>
+      <th>{props.user.profession.name}</th>
+      <th>{props.user.completedMeetings}</th>
+      <th>{props.user.rate}/5</th>
+      <th>
+        <span
+          className="btn btn-danger p-2"
+          onClick={() => props.onDelete(props.user._id)}
+        >
+          delete
+        </span>
+      </th>
+    </tr>
   );
 };
 
