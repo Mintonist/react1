@@ -1,8 +1,8 @@
 import React from 'react';
-import CounterList from './components/countersList';
+import Users from './components/users';
 
 const App = () => {
-  return <CounterList />;
+  return <Users />;
 };
 
 export default App;
