@@ -1,7 +1,7 @@
 export interface IUser {
   _id: string;
   name: string;
-  profession: IProffession;
+  profession?: IProffession;
   qualities: IQuality[];
   completedMeetings: number;
   rate: number;

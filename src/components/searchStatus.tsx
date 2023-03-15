@@ -2,6 +2,7 @@ import React from 'react';
 
 interface StatusProps {
   amount: number;
+  //onAdd: any;
 }
 
 const declOfNum = (

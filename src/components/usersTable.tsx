@@ -6,7 +6,7 @@ import SearchStatus from './searchStatus';
 import UserRow from './userRow';
 
 const UsersTable = () => {
-  let [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
 
   console.log('UsersTable');
 
@@ -27,6 +27,20 @@ const UsersTable = () => {
 
   const handleDelete = (id: string) =>
     setUsers((prevState) => prevState.filter((u) => u._id !== id));
+
+  // const handleAddUser = () => {
+  //   console.log('handleAddUser()');
+  //   users.push({
+  //     _id: '6',
+  //     name: 'тест',
+  //     profession: undefined,
+  //     qualities: [],
+  //     completedMeetings: 72,
+  //     rate: 3.5,
+  //     bookmark: false,
+  //   });
+  //   setUsers(users);
+  // };
 
   //--> если менять только ссылку на сам массив через .concat([]) -  почему первый раз bookmark меняется и перерисовывается, а дальше нет?
   const handleBookmarkChange = (id: string) => {

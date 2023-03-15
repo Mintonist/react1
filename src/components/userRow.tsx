@@ -31,7 +31,7 @@ const UserRow = ({ user, onDelete, onBookmarkChange }: RowProps) => {
     <tr>
       <th>{user.name}</th>
       <th>{renderQualities(user.qualities)}</th>
-      <th>{user.profession.name}</th>
+      <th>{user.profession ? user.profession.name : 'нет'}</th>
       <th className="text-center">{user.completedMeetings}</th>
       <th className="text-center">{user.rate}/5</th>
       <th className="text-center">{renderBookmark(user, onBookmarkChange)}</th>
