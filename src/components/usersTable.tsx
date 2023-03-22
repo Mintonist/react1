@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import api from '../api/index.js';
 import { IUser } from '../models.js';
+import { paginate } from '../utils/paginate';
+import Pagination from './pagination';
 import SearchStatus from './searchStatus';
 import UserRow from './userRow';
 
 const UsersTable = () => {
+  const pageSize: number = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
   const [users, setUsers] = useState<IUser[]>([]);
 
   console.log('UsersTable');
@@ -14,19 +19,18 @@ const UsersTable = () => {
     setUsers(api.users.fetchAll());
   }, []);
 
+  const handlePageChange = (index) => {
+    console.log('Page index = ' + index);
+    setCurrentPage(index);
+  };
+
   const renderRows = (arr: IUser[]) => {
     return arr.map((u) => (
-      <UserRow
-        user={u}
-        key={u._id}
-        onDelete={handleDelete}
-        onBookmarkChange={handleBookmarkChange}
-      />
+      <UserRow user={u} key={u._id} onDelete={handleDelete} onBookmarkChange={handleBookmarkChange} />
     ));
   };
 
-  const handleDelete = (id: string) =>
-    setUsers((prevState) => prevState.filter((u) => u._id !== id));
+  const handleDelete = (id: string) => setUsers((prevState) => prevState.filter((u) => u._id !== id));
 
   // const handleAddUser = () => {
   //   console.log('handleAddUser()');
@@ -55,6 +59,8 @@ const UsersTable = () => {
     });
   };
 
+  const userCrop = paginate(users, currentPage, pageSize);
+
   return (
     <>
       <SearchStatus amount={users.length} />
@@ -70,10 +76,14 @@ const UsersTable = () => {
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody className="align-middle table-group-divider">
-          {renderRows(users)}
-        </tbody>
+        <tbody className="align-middle table-group-divider">{renderRows(userCrop)}</tbody>
       </table>
+      <Pagination
+        itemsCount={users.length}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
     </>
   );
 };
