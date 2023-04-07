@@ -1,8 +1,8 @@
 import React from 'react';
-import UsersTable from './components/usersTable';
+import Users from './components/users';
 
 const App = () => {
-  return <UsersTable />;
+  return <Users />;
 };
 
 export default App;
