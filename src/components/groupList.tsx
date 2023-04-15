@@ -18,7 +18,7 @@ const GroupList = ({
   console.dir(items);
 
   return (
-    <ul className="list-group">
+    <ul className="list-group py-2">
       {Array.isArray(items)
         ? items.map((item) => (
             <li

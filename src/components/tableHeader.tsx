@@ -20,6 +20,7 @@ const TableHeader = ({ onSort, sortBy, columns }: TableProps) => {
       <tr>
         {Object.keys(columns).map((key) => (
           <th
+            key={key}
             onClick={columns[key].path ? () => handleSort(columns[key].path) : undefined}
             {...{ role: columns[key].path && 'button' }}
             scope="col"

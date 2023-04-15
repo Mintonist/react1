@@ -5,6 +5,7 @@ import QualityList from './qualityList';
 import Table from './table';
 import TableBody from './tableBody';
 import TableHeader from './tableHeader';
+import { Link } from 'react-router-dom';
 
 interface TableProps {
   users: IUser[];
@@ -16,7 +17,7 @@ interface TableProps {
 
 const UsersTable = ({ users, onSort, sortBy, onDelete, onBookmarkChange }: TableProps) => {
   const columns = {
-    name: { path: 'name', title: 'Имя' },
+    name: { path: 'name', title: 'Имя', component: (user) => <Link to={'/users/' + user._id}>{user.name}</Link> },
     qualities: {
       title: 'Качества',
       component: (user) => <QualityList qualities={user.qualities} />,
