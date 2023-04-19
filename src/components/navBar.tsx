@@ -1,26 +1,27 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const NavBar = () => {
   const pages = [
-    { id: 1, label: 'Main', link: '/' },
+    { id: 1, label: 'Main', link: '/main' },
     { id: 2, label: 'Login', link: '/login' },
     { id: 3, label: 'Users', link: '/users' },
   ];
-  const [activePage, setActivePage] = React.useState(1);
+  //const [activePage, setActivePage] = React.useState(1);
 
   return (
     <ul className="nav nav-pills px-2 pt-2">
       {pages.map((page) => (
         <li key={page.id} className="nav-item">
-          <Link
-            className={'nav-link ' + (activePage == page.id ? 'active' : '')}
+          <NavLink
+            activeClassName="active"
+            className="nav-link"
             aria-current="page"
             to={page.link}
-            onClick={() => setActivePage(page.id)}
+            // onClick={() => setActivePage(page.id)}
           >
             {page.label}
-          </Link>
+          </NavLink>
         </li>
       ))}
     </ul>

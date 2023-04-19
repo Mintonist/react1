@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import api from '../api/index.js';
 import { IProffession, IUser } from '../models.js';
 import { paginate } from '../utils/paginate';
@@ -7,10 +8,15 @@ import GroupList from './groupList';
 import Pagination from './pagination';
 import SearchStatus from './searchStatus';
 import UsersTable from './usersTable';
+import query from 'query-string';
+
 import _ from 'lodash';
 
-const Users = () => {
-  const pageSize: number = 8;
+const UsersList = () => {
+  const location = useLocation();
+  const search = query.parse(location.search);
+  const pageSize: number = search && search.count && +search.count > 1 ? +search.count : 8;
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const [users, setUsers] = useState<IUser[]>([]);
@@ -114,4 +120,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default UsersList;

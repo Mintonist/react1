@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { IUser } from '../models';
 import api from '../api/index.js';
 import QualityList from './qualityList';
 
-const User = () => {
+interface UserProps {
+  id: string;
+}
+
+const UserInfo = ({ id: userId }: UserProps) => {
   const history = useHistory();
 
   const [user, setUser] = useState<IUser>(null);
 
-  const params = useParams();
-  const { userId } = params;
+  // const params = useParams();
+  // const { userId } = params;
 
   useEffect(() => {
     api.users.getById(userId).then((data) => {
@@ -48,4 +52,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default UserInfo;
