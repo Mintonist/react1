@@ -8,14 +8,16 @@ import GroupList from './groupList';
 import Pagination from './pagination';
 import SearchStatus from './searchStatus';
 import UsersTable from './usersTable';
-import query from 'query-string';
+import TextField from './textField';
 
+import query from 'query-string';
 import _ from 'lodash';
 
 const UsersList = () => {
   const location = useLocation();
   const search = query.parse(location.search);
   const pageSize: number = search && search.count && +search.count > 1 ? +search.count : 8;
+  const [searchString, setSearchString] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,6 +34,15 @@ const UsersList = () => {
   const handlePageChange = (index) => {
     console.log('Page index = ' + index);
     setCurrentPage(index);
+  };
+
+  const handleSearchStringChange = ({ target }) => {
+    console.dir(target);
+    const value: string = target.value.trim();
+    setSearchString(value);
+    if (value.length > 0) {
+      clearFilter();
+    }
   };
 
   const handleSort = (newSortBy: any) => {
@@ -67,14 +78,20 @@ const UsersList = () => {
     });
   };
 
-  const filteredUsers = selectedProfID ? users.filter((u) => u.profession._id == selectedProfID) : users;
+  const filteredUsers = selectedProfID
+    ? users.filter((u) => u.profession._id == selectedProfID)
+    : searchString
+    ? users.filter((u) => u.name.toLowerCase().indexOf(searchString.toLowerCase()) != -1)
+    : users;
   const sortedUsers = sortBy.path ? _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]) : filteredUsers;
   const croppedUsers = paginate(sortedUsers, currentPage, pageSize);
 
   const handleProfessionSelect = (id) => {
+    setSearchString('');
     setCurrentPage(1);
     setSelectedProfID(id);
   };
+
   const clearFilter = () => {
     setCurrentPage(1);
     setSelectedProfID(null);
@@ -99,6 +116,9 @@ const UsersList = () => {
       ) : (
         <div className="d-flex flex-column">
           <SearchStatus amount={filteredUsers.length} />
+          <div className="mt-1">
+            <TextField placeholder="search..." name="search" value={searchString} onChange={handleSearchStringChange} />
+          </div>
           <UsersTable
             users={croppedUsers}
             onSort={handleSort}

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import Login from './pages/loginPage';
-import Main from './pages/mainPage';
+
 import NavBar from './components/navBar';
-import NotFound from './components/not-found';
+
+import Main from './pages/mainPage';
+import Login from './pages/loginPage';
 import Users from './pages/usersPage';
+import NotFound from './pages/notFoundPage';
 
 const App = () => {
   return (
