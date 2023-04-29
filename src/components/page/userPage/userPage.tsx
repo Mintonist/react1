@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { IUser } from '../models';
-import api from '../api/index.js';
-import QualityList from './qualityList';
+import { IUser } from '../../../models';
+import api from '../../../api/index.js';
+import QualityList from '../../ui/qualities/qualityList';
 
 interface UserProps {
   id: string;
 }
 
-const UserInfo = ({ id: userId }: UserProps) => {
+const UserPage = ({ id: userId }: UserProps) => {
   const history = useHistory();
 
   const [user, setUser] = useState<IUser>(null);
@@ -52,4 +52,4 @@ const UserInfo = ({ id: userId }: UserProps) => {
   );
 };
 
-export default UserInfo;
+export default UserPage;

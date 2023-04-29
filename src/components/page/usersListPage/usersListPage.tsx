@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import api from '../api/index.js';
-import { IProffession, IUser } from '../models.js';
-import { paginate } from '../utils/paginate';
-import GroupList from './groupList';
-import Pagination from './pagination';
-import SearchStatus from './searchStatus';
-import UsersTable from './usersTable';
-import TextField from './textField';
+import api from '../../../api/index.js';
+import { IProffession, IUser } from '../../../models.js';
+import { paginate } from '../../../utils/paginate';
+import GroupList from '../../common/groupList';
+import Pagination from '../../common/pagination';
+import SearchStatus from '../../ui/searchStatus';
+import UsersTable from '../../ui/usersTable';
+import TextField from '../../common/form/textField';
 
 import query from 'query-string';
 import _ from 'lodash';
 
-const UsersList = () => {
+const UsersListPage = () => {
   const location = useLocation();
   const search = query.parse(location.search);
   const pageSize: number = search && search.count && +search.count > 1 ? +search.count : 8;
@@ -140,4 +140,4 @@ const UsersList = () => {
   );
 };
 
-export default UsersList;
+export default UsersListPage;

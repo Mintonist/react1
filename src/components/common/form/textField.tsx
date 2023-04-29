@@ -25,6 +25,10 @@ const TextField = ({
     setShowPassword(!showPassord);
   };
 
+  const handleChange = ({ target }) => {
+    onChange({ name: target.name, value: target.value });
+  };
+
   return (
     <div className="mb-3">
       {label && (
@@ -40,7 +44,7 @@ const TextField = ({
           id={name}
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
         />
         {
           //--> почему не работают обычные иконки из bootstrap? и почему не сработал класс has-validation, который должен был скрыглять инпут справа в любых случаях

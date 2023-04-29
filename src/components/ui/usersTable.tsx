@@ -1,11 +1,10 @@
 import React from 'react';
-import { IUser } from '../models';
-import BookmarkIcon from './bookmarkIcon';
-import QualityList from './qualityList';
-import Table from './table';
-import TableBody from './tableBody';
-import TableHeader from './tableHeader';
+import { IUser } from '../../models';
+import BookmarkIcon from '../common/bookmarkIcon';
+
+import Table, { TableBody, TableHeader } from '../common/table';
 import { Link } from 'react-router-dom';
+import QualityList from './qualities';
 
 interface TableProps {
   users: IUser[];

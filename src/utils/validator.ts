@@ -7,6 +7,10 @@ export function validator(data, config) {
         if (dataParam.trim() === '') return configParam.message;
         break;
 
+      case IS_SET_TRUE:
+        if (dataParam != 'true') return configParam.message;
+        break;
+
       case MIN_MAX_LEGTH:
         if (dataParam.trim().length < configParam.min || dataParam.trim().length > configParam.max)
           return configParam.message;
@@ -35,7 +39,7 @@ export function validator(data, config) {
 
   for (const fieldName in data) {
     for (const validateMethod in config[fieldName]) {
-      const err = validate(validateMethod, data[fieldName], config[fieldName][validateMethod]);
+      const err = validate(validateMethod, String(data[fieldName]), config[fieldName][validateMethod]);
       if (err) {
         errors[fieldName] = err;
         break;
@@ -52,3 +56,4 @@ export const HAS_SPECIAL_CHARACTER: string = 'SPECIAL_CHARACTERS';
 export const HAS_CAPITAL_SYMBOL: string = 'HAS_CAPITAL_SYMBOL';
 export const HAS_DIGIT: string = 'HAS_DIGIT';
 export const IS_EMAIL: string = 'IS_EMAIL';
+export const IS_SET_TRUE: string = 'IS_SET_TRUE';
