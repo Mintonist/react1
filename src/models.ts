@@ -1,6 +1,8 @@
 export interface IUser {
   _id: string;
   name: string;
+  email: string;
+  sex: string;
   profession?: IProffession;
   qualities: IQuality[];
   completedMeetings: number;

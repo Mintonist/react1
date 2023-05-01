@@ -43,10 +43,10 @@ const UserPage = ({ id: userId }: UserProps) => {
       <button
         className="mx-2 my-4"
         onClick={() => {
-          history.replace('/users');
+          history.replace(`/users/${userId}/edit`);
         }}
       >
-        Все пользователи
+        Изменить
       </button>
     </>
   );

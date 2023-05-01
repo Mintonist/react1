@@ -15,8 +15,6 @@ const GroupList = ({
   contentProperty = 'name',
   onItemSelect,
 }: GroupListProps) => {
-  console.dir(items);
-
   return (
     <ul className="list-group py-2">
       {Array.isArray(items)

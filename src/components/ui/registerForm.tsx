@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { TextField, SelectField, RadioField, CheckBoxField } from '../common/form';
+import { TextField, SelectField, RadioField, CheckBoxField, MultiSelectField } from '../common/form';
 
 import api from '../../api/index.js';
 import { IProffession, IQuality } from '../../models';
@@ -15,7 +15,6 @@ import {
   HAS_CAPITAL_SYMBOL,
   IS_SET_TRUE,
 } from '../../utils/validator';
-import MultiSelectField from '../common/form/multiSelectField';
 
 const RegisterForm = () => {
   const [data, setData] = useState({
@@ -104,8 +103,8 @@ const RegisterForm = () => {
         name="sex"
         value={data.sex}
         options={[
-          { name: 'М', _id: '1' },
-          { name: 'Ж', _id: '2' },
+          { name: 'М', _id: 'male' },
+          { name: 'Ж', _id: 'female' },
         ]}
         error={errors['sex']}
         onChange={handleChange}

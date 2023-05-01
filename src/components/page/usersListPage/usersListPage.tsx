@@ -36,8 +36,7 @@ const UsersListPage = () => {
     setCurrentPage(index);
   };
 
-  const handleSearchStringChange = ({ target }) => {
-    console.dir(target);
+  const handleSearchStringChange = (target) => {
     const value: string = target.value.trim();
     setSearchString(value);
     if (value.length > 0) {
