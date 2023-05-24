@@ -20,3 +20,11 @@ export interface IQuality {
   name: string;
   color: string;
 }
+
+export interface IComment {
+  _id: string;
+  userId: string;
+  pageId: string;
+  content: string;
+  created_at: number;
+}

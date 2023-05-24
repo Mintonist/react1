@@ -4,6 +4,7 @@ interface TFProps {
   label?: string;
   placeholder?: string;
   type?: string;
+  rows?: number;
   name: string;
   value: string;
   error?: string;
@@ -14,6 +15,7 @@ const TextField = ({
   label = null,
   placeholder = null,
   type = 'text',
+  rows = 1,
   name,
   value,
   error = null,
@@ -37,15 +39,27 @@ const TextField = ({
         </label>
       )}
       <div className="input-group has-validation">
-        <input
-          placeholder={placeholder || ''}
-          className={'form-control ' + (error ? 'is-invalid' : '')}
-          type={showPassord ? 'text' : type}
-          id={name}
-          name={name}
-          value={value}
-          onChange={handleChange}
-        />
+        {rows > 1 && (
+          <textarea
+            className={'form-control ' + (error ? 'is-invalid' : '')}
+            id={name}
+            name={name}
+            value={value}
+            rows={rows}
+            onChange={handleChange}
+          ></textarea>
+        )}
+        {rows <= 1 && (
+          <input
+            placeholder={placeholder || ''}
+            className={'form-control ' + (error ? 'is-invalid' : '')}
+            type={showPassord ? 'text' : type}
+            id={name}
+            name={name}
+            value={value}
+            onChange={handleChange}
+          />
+        )}
         {
           //--> почему не работают обычные иконки из bootstrap? и почему не сработал класс has-validation, который должен был скрыглять инпут справа в любых случаях
           type == 'password' && (
@@ -79,6 +93,7 @@ const TextField = ({
             </button>
           )
         }
+
         {error && <div className="invalid-feedback">{error}</div>}
       </div>
     </div>

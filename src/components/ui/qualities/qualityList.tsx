@@ -6,13 +6,7 @@ interface QualityProps {
 }
 
 const QualityList = ({ qualities }: QualityProps) => {
-  return (
-    <>
-      {qualities.map((q) => (
-        <QualityBadge key={q._id} color={q.color} title={q.name} />
-      ))}
-    </>
-  );
+  return <>{qualities && qualities.map((q) => <QualityBadge key={q._id} color={q.color} title={q.name} />)}</>;
 };
 
 export default QualityList;
