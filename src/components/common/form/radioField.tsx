@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface TFProps {
   label?: string;
-  value: string;
+  value?: string;
   name: string;
   defaultOption?: string;
   options: any;
   error?: string;
-  onChange: any;
+  onChange?: any;
+  onKeyDown?: any;
 }
 
-const RadioField = ({ label = null, value, name, defaultOption = '', options, error = null, onChange }: TFProps) => {
+const RadioField = ({
+  label = null,
+  value = '',
+  name,
+  defaultOption = '',
+  options,
+  error = null,
+  onChange = null,
+  onKeyDown = null,
+}: TFProps) => {
   let optionArray = [];
   if (!Array.isArray(options) && typeof options == 'object') {
     optionArray = Object.keys(options).map((key) => ({ name: options[key].name, _id: options[key]._id }));
@@ -28,7 +38,6 @@ const RadioField = ({ label = null, value, name, defaultOption = '', options, er
       {optionArray.map((opt) => (
         <div key={opt._id} className="form-check form-check-inline">
           <input
-            //className="form-check-input"
             className={'form-check-input ' + (error ? 'is-invalid' : '')}
             type="radio"
             name={name}
@@ -36,6 +45,7 @@ const RadioField = ({ label = null, value, name, defaultOption = '', options, er
             value={opt._id}
             checked={opt._id == value}
             onChange={handleChange}
+            onKeyDown={onKeyDown}
           />
           <label className="form-check-label" htmlFor={opt.name + '_' + opt._id}>
             {opt.name}
@@ -47,4 +57,4 @@ const RadioField = ({ label = null, value, name, defaultOption = '', options, er
   );
 };
 
-export default RadioField;
+export default React.memo(RadioField);

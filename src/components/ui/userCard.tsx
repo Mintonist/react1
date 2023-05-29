@@ -21,7 +21,7 @@ const UserCard = ({ user }: Props) => {
           <i className="bi bi-gear"></i>
         </button>
         <div className="d-flex flex-column align-items-center text-center position-relative">
-          <img src={getAvatarUrl(user)} className="rounded-circle" width="150" />
+          <img src={getAvatarUrl(user)} alt="avatar" className="rounded-circle" width="150" />
           <div className="mt-3">
             <h4>{user.name}</h4>
             <p className="text-secondary mb-1">{'Профессия: ' + user.profession ? user.profession.name : 'нет'}</p>

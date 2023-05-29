@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface TFProps {
   children: any;
-  value: boolean;
+  value?: boolean;
   name: string;
   error?: string;
-  onChange: any;
+  onChange?: any;
+  onKeyDown?: any;
 }
 
-const CheckBoxField = ({ children, value, name, error = null, onChange }: TFProps) => {
+const CheckBoxField = ({ children, value = false, name, error = null, onChange = null, onKeyDown = null }: TFProps) => {
   const handleChange = () => {
     onChange({ name: name, value: !value });
   };
@@ -23,6 +24,7 @@ const CheckBoxField = ({ children, value, name, error = null, onChange }: TFProp
           id={name}
           checked={value}
           onChange={handleChange}
+          onKeyDown={onKeyDown}
         />
         <label className="form-check-label" htmlFor={name}>
           {children}
@@ -33,4 +35,4 @@ const CheckBoxField = ({ children, value, name, error = null, onChange }: TFProp
   );
 };
 
-export default CheckBoxField;
+export default React.memo(CheckBoxField);

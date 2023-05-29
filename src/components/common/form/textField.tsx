@@ -6,9 +6,11 @@ interface TFProps {
   type?: string;
   rows?: number;
   name: string;
-  value: string;
+  value?: string;
   error?: string;
-  onChange: any;
+  onChange?: any;
+  onKeyDown?: any;
+  autoFocus?: boolean;
 }
 
 const TextField = ({
@@ -17,9 +19,11 @@ const TextField = ({
   type = 'text',
   rows = 1,
   name,
-  value,
+  value = '',
   error = null,
-  onChange,
+  onChange = null,
+  onKeyDown = null,
+  autoFocus = false,
 }: TFProps) => {
   const [showPassord, setShowPassword] = useState(false);
 
@@ -58,6 +62,8 @@ const TextField = ({
             name={name}
             value={value}
             onChange={handleChange}
+            autoFocus={autoFocus}
+            onKeyDown={onKeyDown}
           />
         )}
         {
@@ -100,4 +106,4 @@ const TextField = ({
   );
 };
 
-export default TextField;
+export default React.memo(TextField);

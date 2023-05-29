@@ -37,6 +37,17 @@ export function validator(data, config) {
     }
   }
 
+  // проверка на наличие поля в data
+  for (const fieldName in config) {
+    for (const validateMethod in config[fieldName]) {
+      if (validateMethod == IS_REQUIRED && !data[fieldName]) {
+        errors[fieldName] = config[fieldName][validateMethod]['message'];
+        break;
+      }
+    }
+  }
+
+  // проверка занчений согласно конфигу
   for (const fieldName in data) {
     for (const validateMethod in config[fieldName]) {
       const err = validate(validateMethod, String(data[fieldName]), config[fieldName][validateMethod]);

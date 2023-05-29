@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import TextField from '../common/form/textField';
-//import * as yup from 'yup';
-
+import FormComponent, { TextField, CheckBoxField } from '../common/form';
 import {
-  validator,
   IS_REQUIRED,
   MIN_MAX_LEGTH,
   HAS_SPECIAL_CHARACTER,
@@ -12,15 +9,9 @@ import {
   HAS_DIGIT,
   HAS_CAPITAL_SYMBOL,
 } from '../../utils/validator';
-import { CheckBoxField } from '../common/form';
 
 const LoginForm = () => {
-  const [data, setData] = useState({ email: '', password: '', stayOn: false });
-  const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    validate();
-  }, [data]);
+  // const [data, setData] = useState({ email: '', password: '', stayOn: false });
 
   // const validateSchema = yup.object().shape({
   //   password: yup
@@ -44,57 +35,20 @@ const LoginForm = () => {
     },
   };
 
-  const handleChange = (target) => {
-    if (target) {
-      //--> понять синтаксис квадратных скобок для [target.name] - это налаог образения к полю объекта: obj.name ~ obj["name"]
-      setData((prevState) => ({ ...prevState, [target.name]: target.value }));
-    }
-  };
-
-  const validate = () => {
-    // валидация вручную
-    const errors = validator(data, validatorConfig);
-    setErrors(errors);
-
-    // валидация через yup
-    // validateSchema
-    //   .validate(data)
-    //   .then(() => setErrors({}))
-    //   .catch((err) => setErrors({ [err.path]: err.message }));
-
-    // true - если нет ошибок
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    validate();
-    // если есть ошибки валидации
-    if (!validate()) return;
-
+  const handleSubmit = (data) => {
     console.log(data);
   };
 
   return (
-    <form className="" onSubmit={handleSubmit}>
-      <TextField label="Email" name="email" value={data.email} error={errors['email']} onChange={handleChange} />
-      <TextField
-        label="Пароль"
-        type="password"
-        name="password"
-        value={data.password}
-        error={errors['password']}
-        onChange={handleChange}
-      />
-      <CheckBoxField name="stayOn" value={data.stayOn} onChange={handleChange}>
-        Оставаться в системе
-      </CheckBoxField>
+    <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig}>
+      <TextField label="Email" name="email" />
+      <TextField label="Пароль" type="password" name="password" />
+      <CheckBoxField name="stayOn">Оставаться в системе</CheckBoxField>
 
-      <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={Object.keys(errors).length !== 0}>
+      <button className="btn btn-primary w-100 mx-auto" type="submit">
         Submit
       </button>
-    </form>
+    </FormComponent>
   );
 };
 

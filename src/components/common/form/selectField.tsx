@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface TFProps {
   label?: string;
-  value: string;
+  value?: string;
   name: string;
   defaultOption?: string;
   options: any;
   error?: string;
-  onChange: any;
+  onChange?: any;
 }
 
-const SelectField = ({ label = null, value, name, defaultOption = '', options, error = null, onChange }: TFProps) => {
+const SelectField = ({
+  label = null,
+  value = '',
+  name,
+  defaultOption = '',
+  options,
+  error = null,
+  onChange = null,
+}: TFProps) => {
   let optionArray = [];
   if (!Array.isArray(options) && typeof options == 'object') {
     optionArray = Object.keys(options).map((key) => ({ name: options[key].name, _id: options[key]._id }));
@@ -48,4 +56,4 @@ const SelectField = ({ label = null, value, name, defaultOption = '', options, e
   );
 };
 
-export default SelectField;
+export default React.memo(SelectField);

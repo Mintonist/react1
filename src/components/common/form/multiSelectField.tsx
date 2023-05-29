@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Select from 'react-select';
 
 interface TFProps {
   label?: string;
-  value: any[];
+  value?: any[];
   name: string;
   options: any;
   error?: string;
-  onChange: any;
+  onChange?: any;
 }
 
-const MultiSelectField = ({ label = null, value, name, options, error = null, onChange }: TFProps) => {
+const MultiSelectField = ({ label = null, value = [], name, options, error = null, onChange = null }: TFProps) => {
   let optionArray = [];
   if (!Array.isArray(options) && typeof options == 'object') {
     optionArray = Object.keys(options).map((key) => ({ label: options[key].name, value: options[key]._id }));
@@ -40,4 +40,4 @@ const MultiSelectField = ({ label = null, value, name, options, error = null, on
   );
 };
 
-export default MultiSelectField;
+export default React.memo(MultiSelectField);

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { TextField, SelectField, RadioField, CheckBoxField, MultiSelectField } from '../common/form';
+import FormComponent, { TextField, SelectField, RadioField, MultiSelectField } from '../common/form';
 import { useHistory } from 'react-router-dom';
 import api from '../../api/index.js';
 import { IProffession, IQuality, IUser } from '../../models';
 
-import { validator, IS_REQUIRED, IS_EMAIL } from '../../utils/validator';
+import { IS_REQUIRED, IS_EMAIL } from '../../utils/validator';
 
 interface UserProps {
   id: string;
@@ -20,7 +20,7 @@ const UserEditForm = ({ id: userId }: UserProps) => {
     sex: '',
     qualities: [],
   });
-  const [errors, setErrors] = useState({});
+
   const [professions, setProfessions] = useState<IProffession[]>([]);
   const [qualities, setQualities] = useState<IQuality[]>([]);
   const [user, setUser] = useState<IUser>(null);
@@ -41,17 +41,6 @@ const UserEditForm = ({ id: userId }: UserProps) => {
     });
   }, []);
 
-  const handleChange = (target) => {
-    if (target) {
-      //--> понять синтаксис квадратных скобок для [target.name] - это налаог образения к полю объекта: obj.name ~ obj["name"]
-      setData((prevState) => ({ ...prevState, [target.name]: target.value }));
-    }
-  };
-
-  useEffect(() => {
-    validate();
-  }, [data]);
-
   const validatorConfig = {
     email: { [IS_REQUIRED]: { message: 'Email пустой' }, [IS_EMAIL]: { message: 'Email не корректный' } },
     name: {
@@ -61,22 +50,7 @@ const UserEditForm = ({ id: userId }: UserProps) => {
     sex: { [IS_REQUIRED]: { message: 'Нужно выбрать пол' } },
   };
 
-  const validate = () => {
-    const errors = validator(data, validatorConfig);
-
-    setErrors(errors);
-
-    // true - если нет ошибок
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    validate();
-    // если есть ошибки валидации
-    if (!validate()) return;
-
+  const handleSubmit = (data) => {
     // сохраняем
     api.users.update(userId, {
       name: data.name,
@@ -93,50 +67,25 @@ const UserEditForm = ({ id: userId }: UserProps) => {
   return (
     <>
       {user && (
-        <form className="" onSubmit={handleSubmit}>
-          <TextField
-            label="Имя"
-            type="name"
-            name="name"
-            value={data.name}
-            error={errors['name']}
-            onChange={handleChange}
-          />
-          <TextField label="Email" name="email" value={data.email} error={errors['email']} onChange={handleChange} />
+        <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig} defaultData={data}>
+          <TextField label="Имя" type="name" name="name" autoFocus />
+          <TextField label="Email" name="email" value={data.email} />
 
-          <SelectField
-            label="Профессия"
-            name="professionID"
-            value={data.professionID}
-            options={professions}
-            defaultOption="Выбор..."
-            error={errors['professionID']}
-            onChange={handleChange}
-          />
+          <SelectField label="Профессия" name="professionID" options={professions} defaultOption="Выбор..." />
           <RadioField
             label="Пол"
             name="sex"
-            value={data.sex}
             options={[
               { name: 'М', _id: 'male' },
               { name: 'Ж', _id: 'female' },
             ]}
-            error={errors['sex']}
-            onChange={handleChange}
           />
-          <MultiSelectField
-            label="Качества"
-            name="qualities"
-            value={data.qualities}
-            options={qualities}
-            error={errors['qualities']}
-            onChange={handleChange}
-          />
+          <MultiSelectField label="Качества" name="qualities" options={qualities} />
 
-          <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={Object.keys(errors).length !== 0}>
+          <button className="btn btn-primary w-100 mx-auto" type="submit">
             Обновить
           </button>
-        </form>
+        </FormComponent>
       )}
       {user === null && <h2>Loading...</h2>}
       {user === undefined && <h2>{'User with id=' + userId + ' not found.'}</h2>}
