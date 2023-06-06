@@ -3,14 +3,14 @@ export interface IUser {
   name: string;
   email: string;
   sex: string;
-  profession?: IProffession;
+  profession?: IProfession;
   qualities: IQuality[];
   completedMeetings: number;
   rate: number;
   bookmark: boolean;
 }
 
-export interface IProffession {
+export interface IProfession {
   _id: string;
   name: string;
 }

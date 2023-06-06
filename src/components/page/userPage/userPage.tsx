@@ -8,26 +8,29 @@ import CommentForm from '../../ui/commentForm';
 import UserCard from '../../ui/userCard';
 import QualitiesCard from '../../ui/qualitiesCard';
 import MeetingsCard from '../../ui/meetingsCard ';
+import { useUsers } from '../../../hooks/useUsers';
 
 interface UserProps {
   id: string;
 }
 
 const UserPage = ({ id: userId }: UserProps) => {
-  const [user, setUser] = useState<IUser>(null);
-  const [authors, setAuthors] = useState<IUser[]>([]);
+  const { users: authors, getUser } = useUsers();
+  const user = getUser(userId);
+  // const [user, setUser] = useState<IUser>(null);
+  // const [authors, setAuthors] = useState<IUser[]>([]);
   const [comments, setComments] = useState<IComment[]>([]);
 
   // const params = useParams();
   // const { userId } = params;
 
   useEffect(() => {
-    api.users.getById(userId).then((data) => {
-      setUser(data);
-    });
-    api.users.fetchAll().then((data) => {
-      setAuthors(data);
-    });
+    // api.users.getById(userId).then((data) => {
+    //   setUser(data);
+    // });
+    // api.users.fetchAll().then((data) => {
+    //   setAuthors(data);
+    // });
     api.comments.fetchCommentsForUser(userId).then((data) => {
       data.sort((a, b) => {
         if (a.created_at > b.created_at) return -1;

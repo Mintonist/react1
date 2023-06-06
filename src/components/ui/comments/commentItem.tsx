@@ -4,6 +4,7 @@ import { getAvatarUrl } from '../../../utils/avatarUrl';
 import { getTimeStraing } from '../../../utils/formatTime';
 import api from '../../../api/index.js';
 import { useHistory } from 'react-router-dom';
+import { useUsers } from '../../../hooks/useUsers';
 
 interface CommentItemProps {
   // author: IUser;
@@ -12,16 +13,19 @@ interface CommentItemProps {
 }
 
 const CommentItem = ({ comment, onRemove }: CommentItemProps) => {
-  const [author, setAuthor] = useState<IUser>(null);
+  //const [author, setAuthor] = useState<IUser>(null);
   const history = useHistory();
   // const params = useParams();
   // const { userId } = params;
 
-  useEffect(() => {
-    api.users.getById(comment.userId).then((data) => {
-      setAuthor(data);
-    });
-  }, []);
+  const { getUser } = useUsers();
+  const author = getUser(comment.userId);
+
+  // useEffect(() => {
+  //   api.users.getById(comment.userId).then((data) => {
+  //     setAuthor(data);
+  //   });
+  // }, []);
 
   return (
     <div className="bg-light card-body mb-3">

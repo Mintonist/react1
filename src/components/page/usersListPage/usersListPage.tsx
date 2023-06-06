@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import api from '../../../api/index.js';
-import { IProffession, IUser } from '../../../models.js';
+import { IProfession, IUser } from '../../../models.js';
 import { paginate } from '../../../utils/paginate';
 import GroupList from '../../common/groupList';
 import Pagination from '../../common/pagination';
@@ -12,6 +12,8 @@ import TextField from '../../common/form/textField';
 
 import query from 'query-string';
 import _ from 'lodash';
+import { useUsers } from '../../../hooks/useUsers';
+import { useProfessions } from '../../../hooks/useProfessions';
 
 const UsersListPage = () => {
   const location = useLocation();
@@ -21,15 +23,18 @@ const UsersListPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [professions, setProfessions] = useState<IProffession[]>([]);
+  const { users, deleteUser, updateUser } = useUsers();
+  //const [users, setUsers] = useState<IUser[]>([]);
+
+  const { professions } = useProfessions();
+  //const [professions, setProfessions] = useState<IProfession[]>([]);
   const [selectedProfID, setSelectedProfID] = useState<string>(null);
   const [sortBy, setSortBy] = useState({ path: null, order: 'asc' });
 
-  useEffect(() => {
-    api.users.fetchAll().then((data) => setUsers(data));
-    api.professions.fetchAll().then((data) => setProfessions(data));
-  }, []);
+  // useEffect(() => {
+  //   //api.users.fetchAll().then((data) => setUsers(data));
+  //  // api.professions.fetchAll().then((data) => setProfessions(data));
+  // }, []);
 
   const handlePageChange = (index) => {
     console.log('Page index = ' + index);
@@ -48,33 +53,24 @@ const UsersListPage = () => {
     setSortBy(newSortBy);
   };
 
-  const handleDelete = (id: string) => setUsers((prevState) => prevState.filter((u) => u._id !== id));
-
-  // const handleAddUser = () => {
-  //   console.log('handleAddUser()');
-  //   users.push({
-  //     _id: '6',
-  //     name: 'тест',
-  //     profession: undefined,
-  //     qualities: [],
-  //     completedMeetings: 72,
-  //     rate: 3.5,
-  //     bookmark: false,
-  //   });
-  //   setUsers(users);
-  // };
+  const handleDelete = (id: string) => {
+    deleteUser(id);
+    // setUsers((prevState) => prevState.filter((u) => u._id !== id));
+  };
 
   //--> если менять только ссылку на сам массив через .concat([]) -  почему первый раз bookmark меняется и перерисовывается, а дальше нет?
   const handleBookmarkChange = (id: string) => {
     console.log('BookmarkIcon: onChange() ' + id);
-    setUsers((prevState) => {
-      return prevState.map((u) => {
-        if (u._id == id) {
-          return { ...u, bookmark: !u.bookmark };
-        }
-        return u;
-      });
-    });
+    const u = users.find((u) => u._id == id);
+    updateUser(id, { ...u, bookmark: !u.bookmark });
+    // setUsers((prevState) => {
+    //   return prevState.map((u) => {
+    //     if (u._id == id) {
+    //       return { ...u, bookmark: !u.bookmark };
+    //     }
+    //     return u;
+    //   });
+    // });
   };
 
   const filteredUsers = selectedProfID
@@ -98,7 +94,7 @@ const UsersListPage = () => {
 
   return (
     <div className="d-flex">
-      {professions.length > 0 && (
+      {professions && (
         <div className="d-flex flex-column px-2">
           <GroupList selectedID={selectedProfID} items={professions} onItemSelect={handleProfessionSelect}></GroupList>
           <button className="btn btn-secondary py-1" onClick={clearFilter}>

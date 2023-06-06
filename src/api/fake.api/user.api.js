@@ -153,7 +153,20 @@ const update = (id, data) =>
     const userIndex = users.findIndex((u) => u._id === id);
     users[userIndex] = { ...users[userIndex], ...data };
     localStorage.setItem('users', JSON.stringify(users));
-    resolve(users[userIndex]);
+    window.setTimeout(function () {
+      resolve(users[userIndex]);
+    }, 1000);
+  });
+
+const remove = (id) =>
+  new Promise((resolve) => {
+    const users = JSON.parse(localStorage.getItem('users'));
+    const userToRemove = users.find((u) => u._id === id);
+    const newUsers = users.filter((u) => u._id !== id);
+    localStorage.setItem('users', JSON.stringify(newUsers));
+    window.setTimeout(function () {
+      resolve(userToRemove);
+    }, 1000);
   });
 
 const getById = (id) =>
@@ -167,4 +180,5 @@ export default {
   fetchAll,
   getById,
   update,
+  remove,
 };

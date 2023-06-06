@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import FormComponent, { TextField, SelectField, RadioField, CheckBoxField, MultiSelectField } from '../common/form';
 
 import api from '../../api/index.js';
-import { IProffession, IQuality } from '../../models';
+import { IProfession, IQuality } from '../../models';
 
 import {
   IS_REQUIRED,
@@ -14,6 +14,8 @@ import {
   HAS_CAPITAL_SYMBOL,
   IS_SET_TRUE,
 } from '../../utils/validator';
+import { useProfessions } from '../../hooks/useProfessions';
+import { useQualities } from '../../hooks/useQualities';
 
 const RegisterForm = () => {
   // const [data, setData] = useState({
@@ -25,12 +27,16 @@ const RegisterForm = () => {
   //   license: false,
   // });
 
-  const [professions, setProfessions] = useState<IProffession[]>([]);
-  const [qualities, setQualities] = useState<IQuality[]>([]);
-  useEffect(() => {
-    api.professions.fetchAll().then((data) => setProfessions(data));
-    api.qualities.fetchAll().then((data) => setQualities(data));
-  }, []);
+  const { professions } = useProfessions();
+  //const [professions, setProfessions] = useState<IProfession[]>([]);
+
+  const { qualities } = useQualities();
+  //const [qualities, setQualities] = useState<IQuality[]>([]);
+
+  // useEffect(() => {
+  //   // api.professions.fetchAll().then((data) => setProfessions(data));
+  //   //api.qualities.fetchAll().then((data) => setQualities(data));
+  // }, []);
 
   const validatorConfig = {
     email: { [IS_REQUIRED]: { message: 'Email пустой' }, [IS_EMAIL]: { message: 'Email не корректный' } },

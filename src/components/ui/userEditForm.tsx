@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react';
 import FormComponent, { TextField, SelectField, RadioField, MultiSelectField } from '../common/form';
 import { useHistory } from 'react-router-dom';
 import api from '../../api/index.js';
-import { IProffession, IQuality, IUser } from '../../models';
+import { IProfession, IQuality, IUser } from '../../models';
 
 import { IS_REQUIRED, IS_EMAIL } from '../../utils/validator';
+import { useUsers } from '../../hooks/useUsers';
+import { useProfessions } from '../../hooks/useProfessions';
+import { useQualities } from '../../hooks/useQualities';
 
 interface UserProps {
   id: string;
@@ -13,33 +16,56 @@ interface UserProps {
 const UserEditForm = ({ id: userId }: UserProps) => {
   const history = useHistory();
 
-  const [data, setData] = useState({
-    name: '',
-    email: '',
-    professionID: '',
-    sex: '',
-    qualities: [],
-  });
+  // const [formData, setFormData] = useState({
+  //   name: '',
+  //   email: '',
+  //   professionID: '',
+  //   sex: '',
+  //   qualities: [],
+  // });
 
-  const [professions, setProfessions] = useState<IProffession[]>([]);
-  const [qualities, setQualities] = useState<IQuality[]>([]);
-  const [user, setUser] = useState<IUser>(null);
+  const { getUser, updateUser } = useUsers();
+  //const [user, setUser] = useState<IUser>(null);
+  const user = getUser(userId);
 
-  useEffect(() => {
-    api.professions.fetchAll().then((data) => setProfessions(data));
-    api.qualities.fetchAll().then((data) => setQualities(data));
-    api.users.getById(userId).then((data) => {
-      setUser(data);
-      setData((prevState) => ({
-        ...prevState,
-        name: data.name,
-        email: data.email,
-        sex: data.sex,
-        professionID: data.profession._id,
-        qualities: data.qualities.map((q) => ({ label: q.name, value: q._id })),
-      }));
-    });
-  }, []);
+  const { professions } = useProfessions();
+  // const [professions, setProfessions] = useState<IProfession[]>([]);
+
+  const { qualities } = useQualities();
+  // const [qualities, setQualities] = useState<IQuality[]>([]);
+
+  const formData = {
+    name: user.name,
+    email: user.email,
+    sex: user.sex,
+    professionID: user.profession._id,
+    qualities: user.qualities.map((q) => ({ label: q.name, value: q._id })),
+  };
+
+  // setFormData((prevState) => ({
+  //   ...prevState,
+  //   name: user.name,
+  //   email: user.email,
+  //   sex: user.sex,
+  //   professionID: user.profession._id,
+  //   qualities: user.qualities.map((q) => ({ label: q.name, value: q._id })),
+  // }));
+
+  // useEffect(() => {
+  //   //api.professions.fetchAll().then((data) => setProfessions(data));
+  //   //api.qualities.fetchAll().then((data) => setQualities(data));
+  //   // api.users.getById(userId).then((data) => {
+  //   //  // setUser(data);
+  //   //   setFormData((prevState) => ({
+  //   //     ...prevState,
+  //   //     name: data.name,
+  //   //     email: data.email,
+  //   //     sex: data.sex,
+  //   //     professionID: data.profession._id,
+  //   //     qualities: data.qualities.map((q) => ({ label: q.name, value: q._id })),
+  //   //   }));
+  //   //});
+  // }, []);
 
   const validatorConfig = {
     email: { [IS_REQUIRED]: { message: 'Email пустой' }, [IS_EMAIL]: { message: 'Email не корректный' } },
@@ -52,7 +78,14 @@ const UserEditForm = ({ id: userId }: UserProps) => {
 
   const handleSubmit = (data) => {
     // сохраняем
-    api.users.update(userId, {
+    // api.users.update(userId, {
+    //   name: data.name,
+    //   email: data.email,
+    //   sex: data.sex,
+    //   profession: professions.find((p) => p._id === data.professionID),
+    //   qualities: qualities.filter((q) => data.qualities.some((qq) => q._id == qq.value)),
+    // });
+    updateUser(userId, {
       name: data.name,
       email: data.email,
       sex: data.sex,
@@ -67,9 +100,9 @@ const UserEditForm = ({ id: userId }: UserProps) => {
   return (
     <>
       {user && (
-        <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig} defaultData={data}>
+        <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig} defaultData={formData}>
           <TextField label="Имя" type="name" name="name" autoFocus />
-          <TextField label="Email" name="email" value={data.email} />
+          <TextField label="Email" name="email" value={formData.email} />
 
           <SelectField label="Профессия" name="professionID" options={professions} defaultOption="Выбор..." />
           <RadioField

@@ -5,6 +5,7 @@ import BookmarkIcon from '../common/bookmarkIcon';
 import Table, { TableBody, TableHeader } from '../common/table';
 import { Link } from 'react-router-dom';
 import QualityList from './qualities';
+import ProfessionBadge from './professionBadge';
 
 interface TableProps {
   users: IUser[];
@@ -16,18 +17,26 @@ interface TableProps {
 
 const UsersTable = ({ users, onSort, sortBy, onDelete, onBookmarkChange }: TableProps) => {
   const columns = {
-    name: { path: 'name', title: 'Имя', component: (user) => <Link to={'/users/' + user._id}>{user.name}</Link> },
+    name: {
+      path: 'name',
+      title: 'Имя',
+      component: (user: IUser) => <Link to={'/users/' + user._id}>{user.name}</Link>,
+    },
     qualities: {
       title: 'Качества',
       component: (user) => <QualityList qualities={user.qualities} />,
     },
-    prof: { path: 'profession.name', title: 'Проффесия' },
+    prof: {
+      path: 'profession.name',
+      title: 'Профессия',
+      component: (user: IUser) => <ProfessionBadge id={user.profession._id} />,
+    },
     completedMeetings: { path: 'completedMeetings', title: 'Встретился, раз' },
     rate: { path: 'rate', title: 'Оценка' },
     bookmark: {
       path: 'bookmark',
       title: 'Избранное',
-      component: (user) => (
+      component: (user: IUser) => (
         <BookmarkIcon
           status={user.bookmark}
           onChange={() => {
@@ -38,7 +47,7 @@ const UsersTable = ({ users, onSort, sortBy, onDelete, onBookmarkChange }: Table
     },
     del: {
       title: '',
-      component: (user) => (
+      component: (user: IUser) => (
         <span className="btn btn-danger p-1" onClick={() => onDelete(user._id)}>
           delete
         </span>
