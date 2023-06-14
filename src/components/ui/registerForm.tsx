@@ -42,25 +42,26 @@ const RegisterForm = () => {
     email: { [IS_REQUIRED]: { message: 'Email пустой' }, [IS_EMAIL]: { message: 'Email не корректный' } },
     password: {
       [IS_REQUIRED]: { message: 'Пароль пустой' },
-      [MIN_MAX_LEGTH]: { min: 8, max: 16, message: 'Пароль должен быть от 8 до 16 символов' },
-      [HAS_SPECIAL_CHARACTER]: { message: 'Пароль не содержит спец.символ' },
-      [HAS_DIGIT]: { message: 'Пароль не содержит цифру' },
-      [HAS_CAPITAL_SYMBOL]: { message: 'Пароль не содержит заглавной буквы' },
+      [MIN_MAX_LEGTH]: { min: 5, max: 16, message: 'Пароль должен быть от 5 до 16 символов' },
+      // [HAS_SPECIAL_CHARACTER]: { message: 'Пароль не содержит спец.символ' },
+      // [HAS_DIGIT]: { message: 'Пароль не содержит цифру' },
+      // [HAS_CAPITAL_SYMBOL]: { message: 'Пароль не содержит заглавной буквы' },
     },
-    professionID: { [IS_REQUIRED]: { message: 'Нужно выбрать профессию' } },
+    profession: { [IS_REQUIRED]: { message: 'Нужно выбрать профессию' } },
     sex: { [IS_REQUIRED]: { message: 'Нужно выбрать пол' } },
     license: { [IS_SET_TRUE]: { message: 'Нужно согласиться' } },
   };
 
   const handleSubmit = (data) => {
-    console.log(data);
+    const newdata = { ...data, qualities: data.qualities.map((q) => q.value) };
+    console.log('RegisterForm', newdata);
   };
 
   return (
     <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig}>
       <TextField label="Email" name="email" />
       <TextField label="Пароль" type="password" name="password" />
-      <SelectField label="Профессия" name="professionID" options={professions} defaultOption="Выбор..." />
+      <SelectField label="Профессия" name="profession" options={professions} defaultOption="Выбор..." />
       <RadioField
         label="Пол"
         name="sex"

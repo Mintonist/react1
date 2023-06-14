@@ -31,15 +31,16 @@ const UserEditForm = ({ id: userId }: UserProps) => {
   const { professions } = useProfessions();
   // const [professions, setProfessions] = useState<IProfession[]>([]);
 
-  const { qualities } = useQualities();
+  const { qualities, getQuality } = useQualities();
   // const [qualities, setQualities] = useState<IQuality[]>([]);
 
   const formData = {
     name: user.name,
     email: user.email,
     sex: user.sex,
-    professionID: user.profession._id,
-    qualities: user.qualities.map((q) => ({ label: q.name, value: q._id })),
+    professionID: user.profession,
+    qualities: user.qualities.map((id) => ({ label: getQuality(id).name, value: id })),
+    //qualities: user.qualities.map((q) => ({ label: q.name, value: q._id })),
   };
 
   // setFormData((prevState) => ({
@@ -89,8 +90,8 @@ const UserEditForm = ({ id: userId }: UserProps) => {
       name: data.name,
       email: data.email,
       sex: data.sex,
-      profession: professions.find((p) => p._id === data.professionID),
-      qualities: qualities.filter((q) => data.qualities.some((qq) => q._id == qq.value)),
+      profession: data.professionID, //professions.find((p) => p._id === data.professionID),
+      qualities: data.qualities.map((q) => q.value), //qualities.filter((q) => data.qualities.some((qq) => q._id == qq.value)),
     });
 
     // возвращаемся обратно

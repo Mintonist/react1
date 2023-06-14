@@ -74,7 +74,7 @@ const UsersListPage = () => {
   };
 
   const filteredUsers = selectedProfID
-    ? users.filter((u) => u.profession._id == selectedProfID)
+    ? users.filter((u) => u.profession == selectedProfID)
     : searchString
     ? users.filter((u) => u.name.toLowerCase().indexOf(searchString.toLowerCase()) != -1)
     : users;
@@ -103,10 +103,8 @@ const UsersListPage = () => {
         </div>
       )}
       {users.length == 0 ? (
-        <div className="d-flex justify-content-center">
-          <div className="spinner-border p-10" role="status">
-            <span className="visually-hidden">Загрузка...</span>
-          </div>
+        <div className="container mt-5">
+          <p> Нет пользователей</p>
         </div>
       ) : (
         <div className="d-flex flex-column">

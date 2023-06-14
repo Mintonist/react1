@@ -2,6 +2,7 @@ import React from 'react';
 import { IUser } from '../../models';
 import { useHistory } from 'react-router-dom';
 import { getAvatarUrl } from '../../utils/avatarUrl';
+import ProfessionBadge from './professionBadge';
 
 interface Props {
   user: IUser;
@@ -24,7 +25,9 @@ const UserCard = ({ user }: Props) => {
           <img src={getAvatarUrl(user)} alt="avatar" className="rounded-circle" width="150" />
           <div className="mt-3">
             <h4>{user.name}</h4>
-            <p className="text-secondary mb-1">{'Профессия: ' + user.profession ? user.profession.name : 'нет'}</p>
+            <p className="text-secondary mb-1">
+              {'Профессия: ' + user.profession ? <ProfessionBadge id={user.profession} /> : 'нет'}
+            </p>
             <div className="text-muted">
               <i className="bi bi-caret-down-fill text-primary" role="button"></i>
               <i className="bi bi-caret-up text-secondary" role="button"></i>

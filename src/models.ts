@@ -2,9 +2,9 @@ export interface IUser {
   _id: string;
   name: string;
   email: string;
-  sex: string;
-  profession?: IProfession;
-  qualities: IQuality[];
+  sex?: string;
+  profession?: string;
+  qualities: string[];
   completedMeetings: number;
   rate: number;
   bookmark: boolean;

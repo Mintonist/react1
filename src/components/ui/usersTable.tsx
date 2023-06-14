@@ -29,7 +29,7 @@ const UsersTable = ({ users, onSort, sortBy, onDelete, onBookmarkChange }: Table
     prof: {
       path: 'profession.name',
       title: 'Профессия',
-      component: (user: IUser) => <ProfessionBadge id={user.profession._id} />,
+      component: (user: IUser) => <ProfessionBadge id={user.profession} />,
     },
     completedMeetings: { path: 'completedMeetings', title: 'Встретился, раз' },
     rate: { path: 'rate', title: 'Оценка' },

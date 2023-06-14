@@ -46,9 +46,9 @@ const FormComponent = ({ children, validatorConfig, onSubmit, defaultData = null
       const errors = validator(data, validatorConfig);
       setErrors(errors);
       // true - если нет ошибок
-      return isValid;
+      return Object.keys(errors).length === 0;
     },
-    [validatorConfig, setErrors, isValid]
+    [validatorConfig, setErrors]
   );
 
   //   const validate = (data) => {
@@ -74,7 +74,7 @@ const FormComponent = ({ children, validatorConfig, onSubmit, defaultData = null
   };
 
   const handleKeyDown = useCallback((e) => {
-    // если есть ошибки валидации - не вызываем верхний уровень
+    // переход по компонентам фомы по нажатию Enter
     if (e.keyCode == 13) {
       e.preventDefault();
       const form = e.target.form;
@@ -100,7 +100,6 @@ const FormComponent = ({ children, validatorConfig, onSubmit, defaultData = null
     //--> что делаем если кнопка вложена в вёрстку?
     // пришла кнопка (или div c кнопкой:)
     if (type == 'string') {
-      console.log(type, child);
       if (child.type == 'button') {
         if (child.props.type == 'submit' || child.props.type == undefined) {
           config = { ...child.props, disabled: !isValid };

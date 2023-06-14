@@ -84,14 +84,15 @@ export const UsersProvider = ({ children }) => {
   };
 
   const catchError = (err) => {
-    const { message, code } = err.response.data;
-    const status = err.response.status;
-    setError(message);
-    console.log('Expected error: ' + status, code, message);
+    // const { message, code } = err.response.data;
+    // const status = err.response.status;
+    // console.log('Expected error: ' + status, code, message);
+    setError(String(err));
   };
 
   useEffect(() => {
     if (error) {
+      console.log('toast.error()', error);
       toast.error(error);
     }
     setError(null);

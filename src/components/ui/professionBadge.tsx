@@ -8,7 +8,7 @@ interface Props {
 const ProfessionBadge = ({ id }: Props) => {
   const { isLoading, getProfession } = useProfessions();
   const prof = getProfession(id);
-  return <>{!isLoading ? prof.name : '...'}</>;
+  return <>{!isLoading ? (prof ? prof.name : 'нет') : '...'}</>;
 };
 
 export default ProfessionBadge;

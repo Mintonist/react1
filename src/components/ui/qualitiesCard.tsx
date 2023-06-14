@@ -3,7 +3,7 @@ import { IQuality } from '../../models';
 import QualityList from './qualities/qualityList';
 
 interface Props {
-  qualities: IQuality[];
+  qualities: string[];
 }
 
 const QualitiesCard = ({ qualities }: Props) => {
