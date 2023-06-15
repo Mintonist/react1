@@ -28,7 +28,7 @@ const userService = {
   },
   add: async (content) => {
     if (CONFIG.IS_FIREBASE) {
-      const { data } = await httpService.post(endpoint, content);
+      const { data } = await httpService.put(endpoint + content._id, content);
       return data;
     } else {
       const data = { content: null };

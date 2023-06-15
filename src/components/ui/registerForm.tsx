@@ -16,6 +16,7 @@ import {
 } from '../../utils/validator';
 import { useProfessions } from '../../hooks/useProfessions';
 import { useQualities } from '../../hooks/useQualities';
+import { useAuth } from '../../hooks/useAuth';
 
 const RegisterForm = () => {
   // const [data, setData] = useState({
@@ -26,6 +27,8 @@ const RegisterForm = () => {
   //   qualities: [],
   //   license: false,
   // });
+
+  const { login } = useAuth();
 
   const { professions } = useProfessions();
   //const [professions, setProfessions] = useState<IProfession[]>([]);
@@ -54,7 +57,10 @@ const RegisterForm = () => {
 
   const handleSubmit = (data) => {
     const newdata = { ...data, qualities: data.qualities.map((q) => q.value) };
+
     console.log('RegisterForm', newdata);
+
+    login(newdata);
   };
 
   return (

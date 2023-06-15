@@ -9,27 +9,30 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ProfessionsProvider } from './hooks/useProfessions';
 import { QualitiesProvider } from './hooks/useQualities';
+import { AuthProvider } from './hooks/useAuth';
 
 const App = () => {
   return (
     <>
-      <NavBar />
-      <ProfessionsProvider>
-        <QualitiesProvider>
-          <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/users/:userId?/edit" component={Users} />
-            <Route path="/users/:userId?" component={Users} />
+      <AuthProvider>
+        <NavBar />
+        <ProfessionsProvider>
+          <QualitiesProvider>
+            <Switch>
+              <Route path="/login" component={Login} />
+              <Route path="/users/:userId?/edit" component={Users} />
+              <Route path="/users/:userId?" component={Users} />
 
-            {/* <Route path="/users/:userId" component={UserInfo} />
+              {/* <Route path="/users/:userId" component={UserInfo} />
         <Route exact path="/users" component={UsersList} /> */}
-            <Route exact path="/main" component={Main} />
-            <Route exact path="/404" component={NotFound} />
-            <Redirect exact from="/" to="/main" />
-            <Redirect to="/404" />
-          </Switch>
-        </QualitiesProvider>
-      </ProfessionsProvider>
+              <Route exact path="/main" component={Main} />
+              <Route exact path="/404" component={NotFound} />
+              <Redirect exact from="/" to="/main" />
+              <Redirect to="/404" />
+            </Switch>
+          </QualitiesProvider>
+        </ProfessionsProvider>
+      </AuthProvider>
       <ToastContainer autoClose={false} closeButton={true} position={'top-center'} />
     </>
   );

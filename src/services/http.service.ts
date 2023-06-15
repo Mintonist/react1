@@ -3,7 +3,10 @@ import logService from './log.service';
 import { toast } from 'react-toastify';
 import { CONFIG } from '../config';
 
-axios.interceptors.request.use(
+// нужно создать отдельный экземпляр axios c настройками и interceptors которые используются здесь, но не мешают использовать "чистый" axios где-то ещё в проекте
+const myAxios = axios.create();
+
+myAxios.interceptors.request.use(
   function (config) {
     console.log('config.url', config.url);
     //подмена url для firebase
@@ -29,7 +32,7 @@ function transformData(data) {
 }
 
 // глобально отловим ошибки 5xx ("неожидаемые")
-axios.interceptors.response.use(
+myAxios.interceptors.response.use(
   (res) => {
     if (CONFIG.IS_FIREBASE) {
       res.data = { content: transformData(res.data) };
@@ -47,5 +50,5 @@ axios.interceptors.response.use(
   }
 );
 
-const httpService = { get: axios.get, post: axios.post, put: axios.patch, delete: axios.delete };
+const httpService = { get: myAxios.get, post: myAxios.post, put: myAxios.patch, delete: myAxios.delete };
 export default httpService;
