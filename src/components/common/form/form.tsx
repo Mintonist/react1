@@ -6,12 +6,20 @@ interface Props {
   validatorConfig: any;
   onSubmit: any;
   defaultData?: object;
+  defaultErrors?: object;
   autoClear?: boolean;
 }
 
-const FormComponent = ({ children, validatorConfig, onSubmit, defaultData = null, autoClear = false }: Props) => {
-  const [data, setData] = useState(defaultData || {});
-  const [errors, setErrors] = useState({});
+const FormComponent = ({
+  children,
+  validatorConfig,
+  onSubmit,
+  defaultData = {},
+  defaultErrors = {},
+  autoClear = false,
+}: Props) => {
+  const [data, setData] = useState(defaultData);
+  const [errors, setErrors] = useState(defaultErrors);
 
   // до первого нажатия submit button - ошибки не показываем
   let submitAmount = useRef(0);
@@ -67,7 +75,7 @@ const FormComponent = ({ children, validatorConfig, onSubmit, defaultData = null
     if (validate(data)) {
       submitAmount.current = 0;
       if (autoClear) {
-        setData(defaultData || {});
+        setData(defaultData);
       }
       onSubmit(data);
     }

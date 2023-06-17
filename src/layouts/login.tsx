@@ -20,9 +20,9 @@ const Login = () => {
               <h3 className="mb-4">Login</h3>
               <LoginForm></LoginForm>
               <p>
-                Already have account?{' '}
+                Dont have account?{' '}
                 <span role="button" onClick={toggleFormType}>
-                  Sign In
+                  Sign Up
                 </span>
               </p>
             </>
@@ -31,9 +31,9 @@ const Login = () => {
               <h3 className="mb-4">Registration</h3>
               <RegisterForm></RegisterForm>
               <p>
-                Dont have account?{' '}
+                Already have account?{' '}
                 <span role="button" onClick={toggleFormType}>
-                  Sign Up
+                  Sign In
                 </span>
               </p>
             </>

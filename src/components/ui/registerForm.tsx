@@ -1,24 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import FormComponent, { TextField, SelectField, RadioField, CheckBoxField, MultiSelectField } from '../common/form';
+import { useHistory } from 'react-router-dom';
+import FormComponent, { CheckBoxField, MultiSelectField, RadioField, SelectField, TextField } from '../common/form';
 
-import api from '../../api/index.js';
-import { IProfession, IQuality } from '../../models';
-
-import {
-  IS_REQUIRED,
-  MIN_MAX_LEGTH,
-  HAS_SPECIAL_CHARACTER,
-  IS_EMAIL,
-  HAS_DIGIT,
-  HAS_CAPITAL_SYMBOL,
-  IS_SET_TRUE,
-} from '../../utils/validator';
+import { useAuth } from '../../hooks/useAuth';
 import { useProfessions } from '../../hooks/useProfessions';
 import { useQualities } from '../../hooks/useQualities';
-import { useAuth } from '../../hooks/useAuth';
+import { IS_EMAIL, IS_REQUIRED, IS_SET_TRUE, MIN_MAX_LEGTH } from '../../utils/validator';
 
 const RegisterForm = () => {
+  const history = useHistory();
+  const [sumbitErrors, setSumbitErrors] = useState({});
   // const [data, setData] = useState({
   //   email: '',
   //   password: '',
@@ -28,7 +20,7 @@ const RegisterForm = () => {
   //   license: false,
   // });
 
-  const { login } = useAuth();
+  const { signUp } = useAuth();
 
   const { professions } = useProfessions();
   //const [professions, setProfessions] = useState<IProfession[]>([]);
@@ -55,16 +47,23 @@ const RegisterForm = () => {
     license: { [IS_SET_TRUE]: { message: 'Нужно согласиться' } },
   };
 
-  const handleSubmit = (data) => {
-    const newdata = { ...data, qualities: data.qualities.map((q) => q.value) };
+  const handleSubmit = async (data) => {
+    const newdata = { ...data, qualities: data.qualities ? data.qualities.map((q) => q.value) : [] };
 
-    console.log('RegisterForm', newdata);
+    console.log('RegisterForm. submit data:', newdata);
 
-    login(newdata);
+    try {
+      await signUp(newdata);
+      history.push('/');
+    } catch (err) {
+      console.log('LodinForm. submit error:', err);
+      setSumbitErrors(err);
+    }
   };
 
   return (
-    <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig}>
+    //--> почему defaultErrors (например, при повторной регистрации одного и того же email) не отображается в форме?
+    <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig} defaultErrors={sumbitErrors}>
       <TextField label="Email" name="email" />
       <TextField label="Пароль" type="password" name="password" />
       <SelectField label="Профессия" name="profession" options={professions} defaultOption="Выбор..." />

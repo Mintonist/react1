@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import FormComponent, { TextField, CheckBoxField } from '../common/form';
 import {
   IS_REQUIRED,
@@ -9,8 +10,13 @@ import {
   HAS_DIGIT,
   HAS_CAPITAL_SYMBOL,
 } from '../../utils/validator';
+import { useAuth } from '../../hooks/useAuth';
 
 const LoginForm = () => {
+  const history = useHistory();
+  const [sumbitErrors, setSumbitErrors] = useState({});
+
+  const { login } = useAuth();
   // const [data, setData] = useState({ email: '', password: '', stayOn: false });
 
   // const validateSchema = yup.object().shape({
@@ -29,18 +35,27 @@ const LoginForm = () => {
     password: {
       [IS_REQUIRED]: { message: 'Пароль пустой' },
       [MIN_MAX_LEGTH]: { min: 8, max: 16, message: 'Пароль должен быть от 8 до 16 символов' },
-      [HAS_SPECIAL_CHARACTER]: { message: 'Пароль не содержит спец.символ' },
-      [HAS_DIGIT]: { message: 'Пароль не содержит цифру' },
-      [HAS_CAPITAL_SYMBOL]: { message: 'Пароль не содержит заглавной буквы' },
+      // [HAS_SPECIAL_CHARACTER]: { message: 'Пароль не содержит спец.символ' },
+      // [HAS_DIGIT]: { message: 'Пароль не содержит цифру' },
+      // [HAS_CAPITAL_SYMBOL]: { message: 'Пароль не содержит заглавной буквы' },
     },
   };
 
-  const handleSubmit = (data) => {
-    console.log(data);
+  const handleSubmit = async (data) => {
+    console.log('LoginForm. submit data:', data);
+
+    try {
+      await login(data);
+      history.push('/');
+    } catch (err) {
+      console.log('LodinForm. submit error:', err);
+      setSumbitErrors(err);
+    }
   };
 
   return (
-    <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig}>
+    //--> почему defaultErrors (например, при ошибочном email) не отображается в форме?
+    <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig} defaultErrors={sumbitErrors}>
       <TextField label="Email" name="email" />
       <TextField label="Пароль" type="password" name="password" />
       <CheckBoxField name="stayOn">Оставаться в системе</CheckBoxField>
