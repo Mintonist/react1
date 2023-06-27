@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { IComment, IUser } from '../../../models';
+import React from 'react';
+import { IComment } from '../../../models';
 import { getAvatarUrl } from '../../../utils/avatarUrl';
 import { getTimeStraing } from '../../../utils/formatTime';
-import api from '../../../api/index.js';
 import { useHistory } from 'react-router-dom';
 import { useUsers } from '../../../hooks/useUsers';
+import { useAuth } from '../../../hooks/useAuth';
 
 interface CommentItemProps {
   // author: IUser;
@@ -20,6 +20,7 @@ const CommentItem = ({ comment, onRemove }: CommentItemProps) => {
 
   const { getUser } = useUsers();
   const author = getUser(comment.userId);
+  const { user } = useAuth();
 
   // useEffect(() => {
   //   api.users.getById(comment.userId).then((data) => {
@@ -56,12 +57,14 @@ const CommentItem = ({ comment, onRemove }: CommentItemProps) => {
                     </span>
                     <span className="small ps-4">{getTimeStraing(comment.created_at)}</span>
                   </p>
-                  <button
-                    className="btn btn-sm text-primary d-flex align-items-center"
-                    onClick={() => onRemove(comment)}
-                  >
-                    <i className="bi bi-x-lg"></i>
-                  </button>
+                  {author._id == user._id && (
+                    <button
+                      className="btn btn-sm text-primary d-flex align-items-center"
+                      onClick={() => onRemove(comment)}
+                    >
+                      <i className="bi bi-x-lg"></i>
+                    </button>
+                  )}
                 </div>
                 <p className="small mb-0">{comment.content}</p>
               </div>

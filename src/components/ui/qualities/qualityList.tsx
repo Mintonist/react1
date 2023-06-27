@@ -11,7 +11,7 @@ const QualityList = ({ qualities }: QualityProps) => {
 
   return (
     <>
-      {!isLoading
+      {!isLoading && qualities
         ? qualities.map((id) => {
             const q = getQuality(id);
             return <QualityBadge key={q._id} color={q.color} title={q.name} />;

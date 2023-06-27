@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import api from '../../../api/index.js';
-import { IProfession, IUser } from '../../../models.js';
 import { paginate } from '../../../utils/paginate';
 import GroupList from '../../common/groupList';
 import Pagination from '../../common/pagination';
@@ -14,16 +11,17 @@ import query from 'query-string';
 import _ from 'lodash';
 import { useUsers } from '../../../hooks/useUsers';
 import { useProfessions } from '../../../hooks/useProfessions';
+import { useAuth } from '../../../hooks/useAuth';
 
 const UsersListPage = () => {
   const location = useLocation();
   const search = query.parse(location.search);
   const pageSize: number = search && search.count && +search.count > 1 ? +search.count : 8;
   const [searchString, setSearchString] = useState('');
-
+  const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { users, deleteUser, updateUser } = useUsers();
+  const { users, updateUser } = useUsers();
   //const [users, setUsers] = useState<IUser[]>([]);
 
   const { professions } = useProfessions();
@@ -53,10 +51,10 @@ const UsersListPage = () => {
     setSortBy(newSortBy);
   };
 
-  const handleDelete = (id: string) => {
-    deleteUser(id);
-    // setUsers((prevState) => prevState.filter((u) => u._id !== id));
-  };
+  // const handleDelete = (id: string) => {
+  //   deleteUser(id);
+  //   // setUsers((prevState) => prevState.filter((u) => u._id !== id));
+  // };
 
   //--> если менять только ссылку на сам массив через .concat([]) -  почему первый раз bookmark меняется и перерисовывается, а дальше нет?
   const handleBookmarkChange = (id: string) => {
@@ -73,11 +71,12 @@ const UsersListPage = () => {
     // });
   };
 
-  const filteredUsers = selectedProfID
+  let filteredUsers = selectedProfID
     ? users.filter((u) => u.profession == selectedProfID)
     : searchString
     ? users.filter((u) => u.name.toLowerCase().indexOf(searchString.toLowerCase()) != -1)
     : users;
+  filteredUsers = filteredUsers.filter((u) => u._id != user._id);
   const sortedUsers = sortBy.path ? _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]) : filteredUsers;
   const croppedUsers = paginate(sortedUsers, currentPage, pageSize);
 
@@ -116,7 +115,7 @@ const UsersListPage = () => {
             users={croppedUsers}
             onSort={handleSort}
             sortBy={sortBy}
-            onDelete={handleDelete}
+            // onDelete={handleDelete}
             onBookmarkChange={handleBookmarkChange}
           ></UsersTable>
           <div className="d-flex justify-content-center">

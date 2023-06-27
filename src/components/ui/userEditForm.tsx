@@ -1,20 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import FormComponent, { TextField, SelectField, RadioField, MultiSelectField } from '../common/form';
 import { useHistory } from 'react-router-dom';
-import api from '../../api/index.js';
-import { IProfession, IQuality, IUser } from '../../models';
-
 import { IS_REQUIRED, IS_EMAIL } from '../../utils/validator';
 import { useUsers } from '../../hooks/useUsers';
 import { useProfessions } from '../../hooks/useProfessions';
 import { useQualities } from '../../hooks/useQualities';
+import { useAuth } from '../../hooks/useAuth';
 
 interface UserProps {
   id: string;
 }
 const UserEditForm = ({ id: userId }: UserProps) => {
   const history = useHistory();
+  const { user: authUser } = useAuth();
+
+  useEffect(() => {
+    console.log(authUser._id, userId);
+    if (authUser._id != userId) {
+      history.replace(`/users/${authUser._id}/edit`);
+      //history.replace(`/main`);
+    }
+  }, [userId]);
 
   // const [formData, setFormData] = useState({
   //   name: '',
@@ -28,10 +35,10 @@ const UserEditForm = ({ id: userId }: UserProps) => {
   //const [user, setUser] = useState<IUser>(null);
   const user = getUser(userId);
 
-  const { professions } = useProfessions();
+  const { isLoading: isLoadingProfessions, professions } = useProfessions();
   // const [professions, setProfessions] = useState<IProfession[]>([]);
 
-  const { qualities, getQuality } = useQualities();
+  const { isLoading: isLoadingQualities, qualities, getQuality } = useQualities();
   // const [qualities, setQualities] = useState<IQuality[]>([]);
 
   const formData = {
@@ -39,7 +46,7 @@ const UserEditForm = ({ id: userId }: UserProps) => {
     email: user.email,
     sex: user.sex,
     professionID: user.profession,
-    qualities: user.qualities.map((id) => ({ label: getQuality(id).name, value: id })),
+    qualities: user.qualities ? user.qualities.map((id) => ({ label: getQuality(id).name, value: id })) : [],
     //qualities: user.qualities.map((q) => ({ label: q.name, value: q._id })),
   };
 
@@ -100,7 +107,7 @@ const UserEditForm = ({ id: userId }: UserProps) => {
 
   return (
     <>
-      {user && (
+      {!isLoadingProfessions && !isLoadingQualities ? (
         <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig} defaultData={formData}>
           <TextField label="Имя" type="name" name="name" autoFocus />
           <TextField label="Email" name="email" value={formData.email} />
@@ -120,9 +127,9 @@ const UserEditForm = ({ id: userId }: UserProps) => {
             Обновить
           </button>
         </FormComponent>
+      ) : (
+        <h2>Loading data...</h2>
       )}
-      {user === null && <h2>Loading...</h2>}
-      {user === undefined && <h2>{'User with id=' + userId + ' not found.'}</h2>}
     </>
   );
 };

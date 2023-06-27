@@ -3,6 +3,7 @@ import { IUser } from '../../models';
 import { useHistory } from 'react-router-dom';
 import { getAvatarUrl } from '../../utils/avatarUrl';
 import ProfessionBadge from './professionBadge';
+import { useAuth } from '../../hooks/useAuth';
 
 interface Props {
   user: IUser;
@@ -10,17 +11,20 @@ interface Props {
 
 const UserCard = ({ user }: Props) => {
   const history = useHistory();
+  const { user: curUser } = useAuth();
   return (
     <div className="card mb-3">
       <div className="card-body">
-        <button
-          className="position-absolute top-0 end-0 btn btn-light btn-sm"
-          onClick={() => {
-            history.replace(`/users/${user._id}/edit`);
-          }}
-        >
-          <i className="bi bi-gear"></i>
-        </button>
+        {curUser._id == user._id && (
+          <button
+            className="position-absolute top-0 end-0 btn btn-light btn-sm"
+            onClick={() => {
+              history.replace(`/users/${user._id}/edit`);
+            }}
+          >
+            <i className="bi bi-gear"></i>
+          </button>
+        )}
         <div className="d-flex flex-column align-items-center text-center position-relative">
           <img src={getAvatarUrl(user)} alt="avatar" className="rounded-circle" width="150" />
           <div className="mt-3">

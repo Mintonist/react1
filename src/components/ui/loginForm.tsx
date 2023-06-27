@@ -46,7 +46,12 @@ const LoginForm = () => {
 
     try {
       await login(data);
-      history.push('/');
+      console.log(history.location.state);
+      history.push(
+        history.location.state && history.location.state.from && history.location.state.from.pathname
+          ? history.location.state.from.pathname
+          : '/'
+      );
     } catch (err) {
       console.log('LodinForm. submit error:', err);
       setSumbitErrors(err);

@@ -34,6 +34,7 @@ const RegisterForm = () => {
   // }, []);
 
   const validatorConfig = {
+    name: { [IS_REQUIRED]: { message: 'Имя пустое' } },
     email: { [IS_REQUIRED]: { message: 'Email пустой' }, [IS_EMAIL]: { message: 'Email не корректный' } },
     password: {
       [IS_REQUIRED]: { message: 'Пароль пустой' },
@@ -44,6 +45,7 @@ const RegisterForm = () => {
     },
     profession: { [IS_REQUIRED]: { message: 'Нужно выбрать профессию' } },
     sex: { [IS_REQUIRED]: { message: 'Нужно выбрать пол' } },
+
     license: { [IS_SET_TRUE]: { message: 'Нужно согласиться' } },
   };
 
@@ -64,6 +66,7 @@ const RegisterForm = () => {
   return (
     //--> почему defaultErrors (например, при повторной регистрации одного и того же email) не отображается в форме?
     <FormComponent onSubmit={handleSubmit} validatorConfig={validatorConfig} defaultErrors={sumbitErrors}>
+      <TextField label="Имя" name="name" />
       <TextField label="Email" name="email" />
       <TextField label="Пароль" type="password" name="password" />
       <SelectField label="Профессия" name="profession" options={professions} defaultOption="Выбор..." />

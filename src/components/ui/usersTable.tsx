@@ -9,13 +9,13 @@ import ProfessionBadge from './professionBadge';
 
 interface TableProps {
   users: IUser[];
-  onDelete: any;
+  // onDelete: any;
   onBookmarkChange: any;
   onSort: any;
   sortBy: any;
 }
 
-const UsersTable = ({ users, onSort, sortBy, onDelete, onBookmarkChange }: TableProps) => {
+const UsersTable = ({ users, onSort, sortBy, onBookmarkChange }: TableProps) => {
   const columns = {
     name: {
       path: 'name',
@@ -45,14 +45,14 @@ const UsersTable = ({ users, onSort, sortBy, onDelete, onBookmarkChange }: Table
         />
       ),
     },
-    del: {
-      title: '',
-      component: (user: IUser) => (
-        <span className="btn btn-danger p-1" onClick={() => onDelete(user._id)}>
-          delete
-        </span>
-      ),
-    },
+    // del: {
+    //   title: '',
+    //   component: (user: IUser) => (
+    //     <span className="btn btn-danger p-1" onClick={() => onDelete(user._id)}>
+    //       delete
+    //     </span>
+    //   ),
+    // },
   };
 
   return (

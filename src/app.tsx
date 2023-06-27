@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ProfessionsProvider } from './hooks/useProfessions';
 import { QualitiesProvider } from './hooks/useQualities';
 import { AuthProvider } from './hooks/useAuth';
+import ProtectedRout from './components/common/protectedRout';
+import Logout from './layouts/logout';
 
 const App = () => {
   return (
@@ -20,11 +22,9 @@ const App = () => {
           <QualitiesProvider>
             <Switch>
               <Route path="/login" component={Login} />
-              <Route path="/users/:userId?/edit" component={Users} />
-              <Route path="/users/:userId?" component={Users} />
-
-              {/* <Route path="/users/:userId" component={UserInfo} />
-        <Route exact path="/users" component={UsersList} /> */}
+              <Route path="/logout" component={Logout} />
+              {/* <Route path="/users/:userId?/edit" component={Users} /> */}
+              <ProtectedRout path="/users/:userId?" component={Users} />
               <Route exact path="/main" component={Main} />
               <Route exact path="/404" component={NotFound} />
               <Redirect exact from="/" to="/main" />
