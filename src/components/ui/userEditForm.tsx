@@ -84,7 +84,7 @@ const UserEditForm = ({ id: userId }: UserProps) => {
     sex: { [IS_REQUIRED]: { message: 'Нужно выбрать пол' } },
   };
 
-  const handleSubmit = (data) => {
+  const handleSubmit = async (data) => {
     // сохраняем
     // api.users.update(userId, {
     //   name: data.name,
@@ -93,7 +93,7 @@ const UserEditForm = ({ id: userId }: UserProps) => {
     //   profession: professions.find((p) => p._id === data.professionID),
     //   qualities: qualities.filter((q) => data.qualities.some((qq) => q._id == qq.value)),
     // });
-    updateUser(userId, {
+    await updateUser(userId, {
       name: data.name,
       email: data.email,
       sex: data.sex,
