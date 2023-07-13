@@ -10,8 +10,10 @@ import TextField from '../../common/form/textField';
 import query from 'query-string';
 import _ from 'lodash';
 import { useUsers } from '../../../hooks/useUsers';
-import { useProfessions } from '../../../hooks/useProfessions';
+//import { useProfessions } from '../../../hooks/useProfessions';
 import { useAuth } from '../../../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { getProfessions } from '../../../store/professions';
 
 const UsersListPage = () => {
   const location = useLocation();
@@ -22,10 +24,10 @@ const UsersListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { users, updateUser } = useUsers();
-  //const [users, setUsers] = useState<IUser[]>([]);
 
-  const { professions } = useProfessions();
-  //const [professions, setProfessions] = useState<IProfession[]>([]);
+  //const { professions } = useProfessions();
+  const professions = useSelector(getProfessions());
+
   const [selectedProfID, setSelectedProfID] = useState<string>(null);
   const [sortBy, setSortBy] = useState({ path: null, order: 'asc' });
 

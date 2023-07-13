@@ -4,9 +4,12 @@ import { useHistory } from 'react-router-dom';
 import FormComponent, { CheckBoxField, MultiSelectField, RadioField, SelectField, TextField } from '../common/form';
 
 import { useAuth } from '../../hooks/useAuth';
-import { useProfessions } from '../../hooks/useProfessions';
-import { useQualities } from '../../hooks/useQualities';
+//import { useProfessions } from '../../hooks/useProfessions';
+//import { useQualities } from '../../hooks/useQualities';
 import { IS_EMAIL, IS_REQUIRED, IS_SET_TRUE, MIN_MAX_LEGTH } from '../../utils/validator';
+import { useSelector } from 'react-redux';
+import { getQualities } from '../../store/qualities';
+import { getProfessions } from '../../store/professions';
 
 const RegisterForm = () => {
   const history = useHistory();
@@ -22,11 +25,11 @@ const RegisterForm = () => {
 
   const { signUp } = useAuth();
 
-  const { professions } = useProfessions();
-  //const [professions, setProfessions] = useState<IProfession[]>([]);
+  //const { professions } = useProfessions();
+  const professions = useSelector(getProfessions());
 
-  const { qualities } = useQualities();
-  //const [qualities, setQualities] = useState<IQuality[]>([]);
+  //const { qualities } = useQualities();
+  const qualities = useSelector(getQualities());
 
   // useEffect(() => {
   //   // api.professions.fetchAll().then((data) => setProfessions(data));

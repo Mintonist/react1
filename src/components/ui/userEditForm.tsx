@@ -4,9 +4,12 @@ import FormComponent, { TextField, SelectField, RadioField, MultiSelectField } f
 import { useHistory } from 'react-router-dom';
 import { IS_REQUIRED, IS_EMAIL } from '../../utils/validator';
 import { useUsers } from '../../hooks/useUsers';
-import { useProfessions } from '../../hooks/useProfessions';
-import { useQualities } from '../../hooks/useQualities';
+//import { useProfessions } from '../../hooks/useProfessions';
+//mport { useQualities } from '../../hooks/useQualities';
 import { useAuth } from '../../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { getQualities, getQualitiesLoadingStatus, getQualityById } from '../../store/qualities';
+import { getProfessions, getProfessionsLoadingStatus } from '../../store/professions';
 
 interface UserProps {
   id: string;
@@ -35,11 +38,18 @@ const UserEditForm = ({ id: userId }: UserProps) => {
   //const [user, setUser] = useState<IUser>(null);
   const user = getUser(userId);
 
-  const { isLoading: isLoadingProfessions, professions } = useProfessions();
-  // const [professions, setProfessions] = useState<IProfession[]>([]);
+  //const { isLoading: isLoadingProfessions, professions } = useProfessions();
+  const professions = useSelector(getProfessions());
+  const isLoadingProfessions = useSelector(getProfessionsLoadingStatus());
 
-  const { isLoading: isLoadingQualities, qualities, getQuality } = useQualities();
-  // const [qualities, setQualities] = useState<IQuality[]>([]);
+  const getQuality = (id) => {
+    return qualities.find((q) => q._id === id);
+  };
+
+  // const { isLoading: isLoadingQualities, qualities, getQuality } = useQualities();
+
+  const qualities = useSelector(getQualities());
+  const isLoadingQualities = useSelector(getQualitiesLoadingStatus());
 
   const formData = {
     name: user.name,
@@ -47,7 +57,6 @@ const UserEditForm = ({ id: userId }: UserProps) => {
     sex: user.sex,
     professionID: user.profession,
     qualities: user.qualities ? user.qualities.map((id) => ({ label: getQuality(id).name, value: id })) : [],
-    //qualities: user.qualities.map((q) => ({ label: q.name, value: q._id })),
   };
 
   // setFormData((prevState) => ({
