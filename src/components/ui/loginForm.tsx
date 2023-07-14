@@ -10,8 +10,8 @@ import {
   HAS_DIGIT,
   HAS_CAPITAL_SYMBOL,
 } from '../../utils/validator';
-import { useDispatch } from 'react-redux';
-import { login } from '../../store/users';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthError, login } from '../../store/users';
 //import { useAuth } from '../../hooks/useAuth';
 
 const LoginForm = () => {
@@ -19,6 +19,7 @@ const LoginForm = () => {
   const history = useHistory();
   const [sumbitErrors, setSumbitErrors] = useState({});
 
+  const loginError = useSelector(getAuthError());
   //const { login } = useAuth();
 
   // const validateSchema = yup.object().shape({
@@ -67,7 +68,7 @@ const LoginForm = () => {
       <TextField label="Email" name="email" />
       <TextField label="Пароль" type="password" name="password" />
       <CheckBoxField name="stayOn">Оставаться в системе</CheckBoxField>
-
+      {loginError && <p className="text-danger">{loginError}</p>}
       <button className="btn btn-primary w-100 mx-auto" type="submit">
         Submit
       </button>

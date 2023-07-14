@@ -1,17 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IComment } from '../../models';
 import CommentsList from './comments';
 import CommentForm from './commentForm';
-import { useComments } from '../../hooks/useComments';
+//mport { useComments } from '../../hooks/useComments';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addComment,
+  getComments,
+  getCommentsLoadingStatus,
+  loadCommentsList,
+  removeComment,
+} from '../../store/comments';
+import { getCurrentUserId } from '../../store/users';
 
 interface Props {
   userId: string;
 }
 
 const CommentsBlock = ({ userId }: Props) => {
-  //const [comments, setComments] = useState<IComment[]>([]);
-  const { comments, addComment, removeComment } = useComments();
-
+  const dispatch: any = useDispatch();
+  const currentUserId = useSelector(getCurrentUserId());
+  useEffect(() => {
+    dispatch(loadCommentsList(userId));
+  }, [userId]);
+  const isLoading = useSelector(getCommentsLoadingStatus());
+  //const { addComment, removeComment } = useComments();
+  const comments = useSelector(getComments());
   // useEffect(() => {
   //   // api.users.getById(userId).then((data) => {
   //   //   setUser(data);
@@ -33,7 +47,8 @@ const CommentsBlock = ({ userId }: Props) => {
     // api.comments.remove(c._id).then((data) => {
     //   setComments(comments.filter((x) => x._id !== c._id));
     // });
-    removeComment(c._id);
+    // removeComment(c._id);
+    dispatch(removeComment(c._id));
   };
 
   const handleAddComment = (content: string) => {
@@ -41,7 +56,8 @@ const CommentsBlock = ({ userId }: Props) => {
     // api.comments.add({ userId: authorId, pageId: userId, content: content }).then((data) => {
     //   setComments(comments.concat([data]));
     // });
-    addComment(content);
+    //addComment(content);
+    dispatch(addComment(currentUserId, userId, content));
   };
 
   return (
@@ -55,7 +71,7 @@ const CommentsBlock = ({ userId }: Props) => {
         </div>
       </div>
 
-      {comments && comments.length > 0 && (
+      {!isLoading && comments && comments.length > 0 && (
         <div className="card mb-3">
           <div className="card-body">
             <h2>Comments</h2>

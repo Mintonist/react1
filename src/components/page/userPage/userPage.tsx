@@ -4,7 +4,7 @@ import UserCard from '../../ui/userCard';
 import QualitiesCard from '../../ui/qualitiesCard';
 import MeetingsCard from '../../ui/meetingsCard ';
 //import { useUsers } from '../../../hooks/useUsers';
-import { CommentsProvider } from '../../../hooks/useComments';
+//import { CommentsProvider } from '../../../hooks/useComments';
 import CommentsBlock from '../../ui/commentsBlock';
 import { useSelector } from 'react-redux';
 import { getUserById } from '../../../store/users';
@@ -34,9 +34,9 @@ const UserPage = ({ id: userId }: UserProps) => {
               <QualitiesCard qualities={user.qualities}></QualitiesCard>
               <MeetingsCard amount={user.completedMeetings}></MeetingsCard>
             </div>
-            <CommentsProvider>
-              <CommentsBlock userId={userId} />
-            </CommentsProvider>
+            {/* <CommentsProvider> */}
+            <CommentsBlock userId={userId} />
+            {/* </CommentsProvider> */}
           </div>
         </div>
       )}

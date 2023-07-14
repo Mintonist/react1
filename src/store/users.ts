@@ -1,8 +1,8 @@
-import { useHistory } from 'react-router-dom';
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import authService from '../services/auth.service';
 import localStorageService from '../services/localstorage.service';
 import userService from '../services/user.service';
+import { generateAuthError } from '../utils/generateAuthError';
 
 const initialState = {
   entities: [],
@@ -27,6 +27,9 @@ const usersSlice = createSlice({
     usersRequestFailed(state, action) {
       state.error = action.payload;
       state.isLoading = false;
+    },
+    authRequested(state) {
+      state.error = null;
     },
     authRequestFailed(state, action) {
       state.error = action.payload;
@@ -63,6 +66,7 @@ const { actions, reducer: usersReducer } = usersSlice;
 const {
   recived,
   userUpdated,
+  authRequested,
   userLogout,
   usersRequested,
   usersRequestFailed,
@@ -76,7 +80,6 @@ function randomInt(min: number, max: number): number {
 }
 
 // просто actions без обработки и payload в отличие от reducers в createSlice выше
-const authRequested = createAction('users/authRequested');
 const userCreateRequested = createAction('users/userCreateRequested');
 const userCreateFailed = createAction('users/userCreateFailed');
 const userUpdateRequested = createAction('users/userUpdateRequested');
@@ -138,16 +141,23 @@ export const login =
 
       dispatch(authRequestSuccess({ userId: data.localId }));
     } catch (error) {
-      dispatch(authRequestFailed(error.message));
+      const { code, message } = error.response.data.error;
+      if (code === 400) {
+        const errorMessage = generateAuthError(message);
+        dispatch(authRequestFailed(errorMessage));
+      } else {
+        dispatch(authRequestFailed(error.message));
+      }
     }
   };
 
 export const logout = () => async (dispatch) => {
   localStorageService.clearTokens();
-  const history = useHistory();
+
   dispatch(userLogout());
   // setUser(null);
-  history.push('/');
+  // const history = useHistory();
+  // history.push('/');
 };
 
 export const loadUsersList = () => async (dispatch, getState) => {
@@ -171,5 +181,7 @@ export const getCurrentUserInfo = () => (state) => {
   if (!state.users.entities) return null;
   return state.users.entities.find((u) => u._id == state.users.auth.userId);
 };
+
+export const getAuthError = () => (state) => state.users.error;
 
 export default usersReducer;
