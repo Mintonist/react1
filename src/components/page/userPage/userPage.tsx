@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import UserCard from '../../ui/userCard';
 import QualitiesCard from '../../ui/qualitiesCard';
 import MeetingsCard from '../../ui/meetingsCard ';
-import { useUsers } from '../../../hooks/useUsers';
-import { CommentsProvider, useComments } from '../../../hooks/useComments';
+//import { useUsers } from '../../../hooks/useUsers';
+import { CommentsProvider } from '../../../hooks/useComments';
 import CommentsBlock from '../../ui/commentsBlock';
+import { useSelector } from 'react-redux';
+import { getUserById } from '../../../store/users';
 
 interface UserProps {
   id: string;
 }
 
 const UserPage = ({ id: userId }: UserProps) => {
-  const { getUser } = useUsers();
-  const user = getUser(userId);
+  // const { getUserById } = useUsers();
+  // const user = getUserById(userId);
+  const user = useSelector(getUserById(userId));
 
   // const [user, setUser] = useState<IUser>(null);
   // const [authors, setAuthors] = useState<IUser[]>([]);

@@ -3,8 +3,10 @@ import { toast } from 'react-toastify';
 import { IComment } from '../models';
 import commentService from '../services/comment.service';
 import { useParams } from 'react-router-dom';
-import { useAuth } from './useAuth';
+//import { useAuth } from './useAuth';
 import { nanoid } from 'nanoid';
+import { useSelector } from 'react-redux';
+import { getCurrentUserId } from '../store/users';
 
 interface ICommentContext {
   isLoading: boolean;
@@ -23,7 +25,8 @@ export const CommentsProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(true);
   //const prevState = useRef<IComment[]>(null);
   const { userId } = useParams();
-  const { user } = useAuth();
+  //const { user } = useAuth();
+  const currentUserId = useSelector(getCurrentUserId());
 
   async function getComments() {
     try {
@@ -66,7 +69,7 @@ export const CommentsProvider = ({ children }) => {
 
   async function addComment(msg: string) {
     try {
-      const comment = { _id: nanoid(), userId: user._id, pageId: userId, content: msg, created_at: Date.now() };
+      const comment = { _id: nanoid(), userId: currentUserId, pageId: userId, content: msg, created_at: Date.now() };
       const { content } = await commentService.add(comment);
       setComments((prevState) => prevState.concat([comment]));
       return content as IComment;

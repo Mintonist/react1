@@ -8,12 +8,14 @@ const qualitiesSlice = createSlice({
   initialState,
   reducers: {
     recived(state, action) {
-      console.log('qualitiesSlice', action);
+      //console.log('qualitiesSlice.recived');
       state.entities = action.payload;
       state.lastFetch = Date.now();
       state.isLoading = false;
     },
     qualitiesRequested(state) {
+      // console.log('qualitiesSlice.qualitiesRequested');
+      state.lastFetch = Date.now();
       state.isLoading = true;
     },
     qualitiesRequestFailed(state, action) {
@@ -28,6 +30,7 @@ const { actions, reducer: qualitiesReducer } = qualitiesSlice;
 const { recived, qualitiesRequested, qualitiesRequestFailed } = actions;
 
 function isOutDated(date) {
+  console.log('isOutDated?', Date.now(), date, Date.now() - date > 10 * 60 * 1000);
   return Date.now() - date > 10 * 60 * 1000;
 }
 

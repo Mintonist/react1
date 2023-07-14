@@ -5,7 +5,7 @@ import { IUser } from '../models';
 
 interface IUserContext {
   users: IUser[];
-  getUser?: (string) => IUser;
+  getUserById?: (string) => IUser;
   updateUser?: (string, any) => Promise<IUser>;
   addUser?: (any) => Promise<IUser>;
   deleteUser?: (string) => Promise<IUser>;
@@ -36,7 +36,7 @@ export const UsersProvider = ({ children }) => {
     getUsers();
   }, []);
 
-  const getUser = (id) => {
+  const getUserById = (id) => {
     return users.find((q) => q._id === id);
   };
 
@@ -99,7 +99,7 @@ export const UsersProvider = ({ children }) => {
   }, [error]);
 
   return (
-    <UsersContext.Provider value={{ users, getUser, updateUser, addUser, deleteUser }}>
+    <UsersContext.Provider value={{ users, getUserById, updateUser, addUser, deleteUser }}>
       {!isLoading ? children : <h2>Loading users...</h2>}
     </UsersContext.Provider>
   );

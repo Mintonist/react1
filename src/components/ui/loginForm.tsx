@@ -10,14 +10,16 @@ import {
   HAS_DIGIT,
   HAS_CAPITAL_SYMBOL,
 } from '../../utils/validator';
-import { useAuth } from '../../hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/users';
+//import { useAuth } from '../../hooks/useAuth';
 
 const LoginForm = () => {
+  const dispatch: any = useDispatch();
   const history = useHistory();
   const [sumbitErrors, setSumbitErrors] = useState({});
 
-  const { login } = useAuth();
-  // const [data, setData] = useState({ email: '', password: '', stayOn: false });
+  //const { login } = useAuth();
 
   // const validateSchema = yup.object().shape({
   //   password: yup
@@ -45,7 +47,8 @@ const LoginForm = () => {
     console.log('LoginForm. submit data:', data);
 
     try {
-      await login(data);
+      //await login(data);
+      dispatch(login(data));
       console.log(history.location.state);
       history.push(
         history.location.state && history.location.state.from && history.location.state.from.pathname

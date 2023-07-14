@@ -3,15 +3,17 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import FormComponent, { CheckBoxField, MultiSelectField, RadioField, SelectField, TextField } from '../common/form';
 
-import { useAuth } from '../../hooks/useAuth';
+//import { useAuth } from '../../hooks/useAuth';
 //import { useProfessions } from '../../hooks/useProfessions';
 //import { useQualities } from '../../hooks/useQualities';
 import { IS_EMAIL, IS_REQUIRED, IS_SET_TRUE, MIN_MAX_LEGTH } from '../../utils/validator';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getQualities } from '../../store/qualities';
 import { getProfessions } from '../../store/professions';
+import { signUp } from '../../store/users';
 
 const RegisterForm = () => {
+  const dispatch: any = useDispatch();
   const history = useHistory();
   const [sumbitErrors, setSumbitErrors] = useState({});
   // const [data, setData] = useState({
@@ -23,7 +25,7 @@ const RegisterForm = () => {
   //   license: false,
   // });
 
-  const { signUp } = useAuth();
+  //const { signUp } = useAuth();
 
   //const { professions } = useProfessions();
   const professions = useSelector(getProfessions());
@@ -58,7 +60,8 @@ const RegisterForm = () => {
     console.log('RegisterForm. submit data:', newdata);
 
     try {
-      await signUp(newdata);
+      //await signUp(newdata);
+      dispatch(signUp(newdata));
       history.push('/');
     } catch (err) {
       console.log('LodinForm. submit error:', err);

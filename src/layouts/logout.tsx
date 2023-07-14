@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/users';
+//import { useAuth } from '../hooks/useAuth';
 
 const Logout = () => {
-  const { logout } = useAuth();
+  // const { logout } = useAuth();
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
-    logout();
+    dispatch(logout());
   }, []);
 
   return <div className="container mt-5">Loading...</div>;

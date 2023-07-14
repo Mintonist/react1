@@ -3,20 +3,23 @@ import React, { useEffect } from 'react';
 import FormComponent, { TextField, SelectField, RadioField, MultiSelectField } from '../common/form';
 import { useHistory } from 'react-router-dom';
 import { IS_REQUIRED, IS_EMAIL } from '../../utils/validator';
-import { useUsers } from '../../hooks/useUsers';
+//import { useUsers } from '../../hooks/useUsers';
 //import { useProfessions } from '../../hooks/useProfessions';
 //mport { useQualities } from '../../hooks/useQualities';
-import { useAuth } from '../../hooks/useAuth';
-import { useSelector } from 'react-redux';
+//import { useAuth } from '../../hooks/useAuth';
+import { useDispatch, useSelector } from 'react-redux';
 import { getQualities, getQualitiesLoadingStatus, getQualityById } from '../../store/qualities';
 import { getProfessions, getProfessionsLoadingStatus } from '../../store/professions';
+import { getCurrentUserInfo, getUserById, updateUser } from '../../store/users';
 
 interface UserProps {
   id: string;
 }
 const UserEditForm = ({ id: userId }: UserProps) => {
   const history = useHistory();
-  const { user: authUser } = useAuth();
+  const dispatch: any = useDispatch();
+  //const { user: authUser } = useAuth();
+  const authUser = useSelector(getCurrentUserInfo());
 
   useEffect(() => {
     console.log(authUser._id, userId);
@@ -34,9 +37,9 @@ const UserEditForm = ({ id: userId }: UserProps) => {
   //   qualities: [],
   // });
 
-  const { getUser, updateUser } = useUsers();
-  //const [user, setUser] = useState<IUser>(null);
-  const user = getUser(userId);
+  // const { getUserById: getUser, updateUser } = useUsers();
+  //const user = getUser(userId);
+  const user = useSelector(getUserById(userId));
 
   //const { isLoading: isLoadingProfessions, professions } = useProfessions();
   const professions = useSelector(getProfessions());
@@ -95,20 +98,24 @@ const UserEditForm = ({ id: userId }: UserProps) => {
 
   const handleSubmit = async (data) => {
     // сохраняем
-    // api.users.update(userId, {
+
+    // await updateUser(userId, {
     //   name: data.name,
     //   email: data.email,
     //   sex: data.sex,
-    //   profession: professions.find((p) => p._id === data.professionID),
-    //   qualities: qualities.filter((q) => data.qualities.some((qq) => q._id == qq.value)),
+    //   profession: data.professionID,
+    //   qualities: data.qualities.map((q) => q.value),
     // });
-    await updateUser(userId, {
-      name: data.name,
-      email: data.email,
-      sex: data.sex,
-      profession: data.professionID, //professions.find((p) => p._id === data.professionID),
-      qualities: data.qualities.map((q) => q.value), //qualities.filter((q) => data.qualities.some((qq) => q._id == qq.value)),
-    });
+
+    dispatch(
+      updateUser(userId, {
+        name: data.name,
+        email: data.email,
+        sex: data.sex,
+        profession: data.professionID,
+        qualities: data.qualities.map((q) => q.value),
+      })
+    );
 
     // возвращаемся обратно
     history.push(`/users/${userId}`);

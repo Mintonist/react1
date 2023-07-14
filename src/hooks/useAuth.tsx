@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import userService from '../services/user.service';
 import localStorageService from '../services/localstorage.service';
 import { toast } from 'react-toastify';
@@ -26,6 +26,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState<IUser>(null);
   const [error, setError] = useState<string>(null);
   const [isLoading, setLoading] = useState(true);
+
+  console.log('AuthProvider render');
 
   const history = useHistory();
 

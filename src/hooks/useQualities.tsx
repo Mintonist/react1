@@ -23,11 +23,10 @@ export const QualitiesProvider = ({ children }) => {
   async function getAll() {
     try {
       const data = await qualityService.fetchAll();
-      console.log('UsersProvider', data);
+
       setQualities(data.content);
       setLoading(false);
     } catch (err) {
-      console.log('UsersProvider err', err);
       const { message } = err.response.data;
       setError(message);
     }

@@ -9,21 +9,25 @@ import TextField from '../../common/form/textField';
 
 import query from 'query-string';
 import _ from 'lodash';
-import { useUsers } from '../../../hooks/useUsers';
+//import { useUsers } from '../../../hooks/useUsers';
 //import { useProfessions } from '../../../hooks/useProfessions';
-import { useAuth } from '../../../hooks/useAuth';
-import { useSelector } from 'react-redux';
+//import { useAuth } from '../../../hooks/useAuth';
+import { useDispatch, useSelector } from 'react-redux';
 import { getProfessions } from '../../../store/professions';
+import { getCurrentUserId, getUsers, updateUser } from '../../../store/users';
 
 const UsersListPage = () => {
+  const dispatch: any = useDispatch();
   const location = useLocation();
   const search = query.parse(location.search);
   const pageSize: number = search && search.count && +search.count > 1 ? +search.count : 8;
   const [searchString, setSearchString] = useState('');
-  const { user } = useAuth();
+  //const { user } = useAuth();
+  const userId = useSelector(getCurrentUserId());
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { users, updateUser } = useUsers();
+  //const { users, updateUser } = useUsers();
+  const users = useSelector(getUsers());
 
   //const { professions } = useProfessions();
   const professions = useSelector(getProfessions());
@@ -62,7 +66,8 @@ const UsersListPage = () => {
   const handleBookmarkChange = (id: string) => {
     console.log('BookmarkIcon: onChange() ' + id);
     const u = users.find((u) => u._id == id);
-    updateUser(id, { ...u, bookmark: !u.bookmark });
+    // updateUser(id, { ...u, bookmark: !u.bookmark });
+    dispatch(updateUser(id, { ...u, bookmark: !u.bookmark }));
     // setUsers((prevState) => {
     //   return prevState.map((u) => {
     //     if (u._id == id) {
@@ -78,7 +83,7 @@ const UsersListPage = () => {
     : searchString
     ? users.filter((u) => u.name.toLowerCase().indexOf(searchString.toLowerCase()) != -1)
     : users;
-  filteredUsers = filteredUsers.filter((u) => u._id != user._id);
+  filteredUsers = filteredUsers.filter((u) => u._id != userId);
   const sortedUsers = sortBy.path ? _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]) : filteredUsers;
   const croppedUsers = paginate(sortedUsers, currentPage, pageSize);
 

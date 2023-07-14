@@ -1,18 +1,21 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { getIsLoggedIn } from '../../store/users';
+//import { useAuth } from '../../hooks/useAuth';
 import NavProfile from './navProfile';
 
 const NavBar = () => {
-  const { user } = useAuth();
+  //const { user } = useAuth();
+  const isLoggedIn = useSelector(getIsLoggedIn());
 
   const pages = [{ id: 1, label: 'Main', link: '/main' }];
 
-  if (!user) {
+  if (!isLoggedIn) {
     pages.push({ id: 2, label: 'Login', link: '/login' });
   }
 
-  if (user) {
+  if (isLoggedIn) {
     pages.push({ id: 3, label: 'Users', link: '/users' });
   }
 
@@ -28,7 +31,7 @@ const NavBar = () => {
             </li>
           ))}
         </ul>
-        {user && <NavProfile />}
+        {isLoggedIn && <NavProfile />}
         {/* <div className="d-flex">{user && <p>{user.name}</p>}</div> */}
       </div>
     </nav>

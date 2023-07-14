@@ -3,7 +3,9 @@ import { IUser } from '../../models';
 import { useHistory } from 'react-router-dom';
 import { getAvatarUrl } from '../../utils/avatarUrl';
 import ProfessionBadge from './professionBadge';
-import { useAuth } from '../../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { getCurrentUserInfo } from '../../store/users';
+//import { useAuth } from '../../hooks/useAuth';
 
 interface Props {
   user: IUser;
@@ -11,7 +13,8 @@ interface Props {
 
 const UserCard = ({ user }: Props) => {
   const history = useHistory();
-  const { user: curUser } = useAuth();
+  //const { user: curUser } = useAuth();
+  const curUser = useSelector(getCurrentUserInfo());
   return (
     <div className="card mb-3">
       <div className="card-body">

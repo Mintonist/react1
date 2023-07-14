@@ -3,8 +3,10 @@ import { IComment } from '../../../models';
 import { getAvatarUrl } from '../../../utils/avatarUrl';
 import { getTimeStraing } from '../../../utils/formatTime';
 import { useHistory } from 'react-router-dom';
-import { useUsers } from '../../../hooks/useUsers';
-import { useAuth } from '../../../hooks/useAuth';
+//import { useUsers } from '../../../hooks/useUsers';
+//import { useAuth } from '../../../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { getCurrentUserId, getUserById } from '../../../store/users';
 
 interface CommentItemProps {
   // author: IUser;
@@ -18,9 +20,11 @@ const CommentItem = ({ comment, onRemove }: CommentItemProps) => {
   // const params = useParams();
   // const { userId } = params;
 
-  const { getUser } = useUsers();
-  const author = getUser(comment.userId);
-  const { user } = useAuth();
+  //const { getUserById: getUser } = useUsers();
+  // const author = getUser(comment.userId);
+  const author = useSelector(getUserById(comment.userId));
+  //const { user } = useAuth();
+  const userId = useSelector(getCurrentUserId());
 
   // useEffect(() => {
   //   api.users.getById(comment.userId).then((data) => {
@@ -57,7 +61,7 @@ const CommentItem = ({ comment, onRemove }: CommentItemProps) => {
                     </span>
                     <span className="small ps-4">{getTimeStraing(comment.created_at)}</span>
                   </p>
-                  {author._id == user._id && (
+                  {author._id == userId && (
                     <button
                       className="btn btn-sm text-primary d-flex align-items-center"
                       onClick={() => onRemove(comment)}

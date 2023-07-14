@@ -1,8 +1,9 @@
+import authService from './auth.service';
 import axios from 'axios';
 import logService from './log.service';
 import { toast } from 'react-toastify';
 import { CONFIG } from '../config';
-import { httpAuth } from '../hooks/useAuth';
+//import { httpAuth } from '../hooks/useAuth';
 import localStorageService from './localstorage.service';
 
 // нужно создать отдельный экземпляр axios c настройками и interceptors которые используются здесь, но не мешают использовать "чистый" axios где-то ещё в проекте
@@ -25,7 +26,8 @@ myAxios.interceptors.request.use(
       const expireDate = localStorageService.getExpiresDate();
       const refreshToken = localStorageService.getRefreshToken();
       if (refreshToken && expireDate < Date.now()) {
-        const { data } = await httpAuth.post('token', { grant_type: 'refresh_token', refresh_token: refreshToken });
+        const data = await authService.refresh();
+
         localStorageService.setTokens({
           refreshToken: data.refresh_token,
           idToken: data.id_token,
