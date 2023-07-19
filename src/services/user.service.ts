@@ -9,7 +9,7 @@ const userService = {
   update: async (id, content) => {
     if (CONFIG.IS_FIREBASE) {
       const { data } = await httpService.put(endpoint + id, content);
-      console.log('userService.update data:', data);
+      console.log('userService.update data:', content, data);
       return data;
     } else {
       const data = { content: null };

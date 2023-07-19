@@ -9,7 +9,7 @@ const AppLoader = ({ children }) => {
   const isUsersLoading = useSelector(getUsersLoadingStatus());
   const dispatch: any = useDispatch();
 
-  console.log('AppLoader render');
+  //console.log('AppLoader render');
 
   useEffect(() => {
     dispatch(loadQualitiesList());
@@ -17,7 +17,7 @@ const AppLoader = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log('AppLoader isLoggedIn changed');
+    //console.log('AppLoader isLoggedIn changed');
     if (isLoggedIn) {
       dispatch(loadUsersList());
     }

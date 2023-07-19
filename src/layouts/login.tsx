@@ -4,10 +4,10 @@ import { useParams } from 'react-router-dom';
 import RegisterForm from '../components/ui/registerForm';
 
 const Login = () => {
-  const { type } = useParams();
-  const [formType, setFormType] = useState(type === 'register' ? type : 'login');
+  const { param } = useParams();
+  const [formType, setFormType] = useState(param === 'register' ? param : 'login');
 
-  const toggleFormType = (param) => {
+  const toggleFormType = () => {
     setFormType((prevState) => (prevState === 'register' ? 'login' : 'register'));
   };
 
@@ -18,7 +18,7 @@ const Login = () => {
           {formType == 'login' ? (
             <>
               <h3 className="mb-4">Login</h3>
-              <LoginForm></LoginForm>
+              <LoginForm />
               <p>
                 Dont have account?{' '}
                 <span role="button" onClick={toggleFormType}>
@@ -29,7 +29,7 @@ const Login = () => {
           ) : (
             <>
               <h3 className="mb-4">Registration</h3>
-              <RegisterForm></RegisterForm>
+              <RegisterForm />
               <p>
                 Already have account?{' '}
                 <span role="button" onClick={toggleFormType}>

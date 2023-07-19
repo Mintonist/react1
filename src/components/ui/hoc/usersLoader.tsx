@@ -5,7 +5,7 @@ import { getUsersLoadingStatus, loadUsersList } from '../../../store/users';
 const UsersLoader = ({ children }) => {
   const isUsersLoading = useSelector(getUsersLoadingStatus());
   const dispatch: any = useDispatch();
-  console.log('UsersLoader render');
+  //console.log('UsersLoader render');
   useEffect(() => {
     if (isUsersLoading) {
       dispatch(loadUsersList());

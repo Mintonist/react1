@@ -12,7 +12,7 @@ const NavBar = () => {
   const pages = [{ id: 1, label: 'Main', link: '/main' }];
 
   if (!isLoggedIn) {
-    pages.push({ id: 2, label: 'Login', link: '/login' });
+    pages.push({ id: 2, label: 'Login', link: '/login/login' });
   }
 
   if (isLoggedIn) {

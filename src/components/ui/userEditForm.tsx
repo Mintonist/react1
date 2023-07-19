@@ -22,7 +22,7 @@ const UserEditForm = ({ id: userId }: UserProps) => {
   const authUser = useSelector(getCurrentUserInfo());
 
   useEffect(() => {
-    console.log(authUser._id, userId);
+    //console.log(authUser._id, userId);
     if (authUser._id != userId) {
       history.replace(`/users/${authUser._id}/edit`);
       //history.replace(`/main`);
@@ -109,6 +109,7 @@ const UserEditForm = ({ id: userId }: UserProps) => {
 
     dispatch(
       updateUser(userId, {
+        _id: userId,
         name: data.name,
         email: data.email,
         sex: data.sex,

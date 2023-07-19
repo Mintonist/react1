@@ -12,7 +12,7 @@ const ProtectedRout = ({ component: Component, children = null, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        if (!isLoggedIn) return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />;
+        if (!isLoggedIn) return <Redirect to={{ pathname: '/login/login', state: { from: props.location } }} />;
         return Component ? <Component {...props} /> : children;
       }}
     />

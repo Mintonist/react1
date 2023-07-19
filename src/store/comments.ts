@@ -9,7 +9,7 @@ const commentsSlice = createSlice({
   initialState,
   reducers: {
     recived(state, action) {
-      console.log('commentsSlice', action);
+      //console.log('commentsSlice', action);
       state.entities = action.payload;
       state.isLoading = false;
     },

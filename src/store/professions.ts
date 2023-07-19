@@ -8,7 +8,7 @@ const professionsSlice = createSlice({
   initialState,
   reducers: {
     recived(state, action) {
-      console.log('professionsSlice', action);
+      //console.log('professionsSlice', action);
       state.entities = action.payload;
       state.lastFetch = Date.now();
       state.isLoading = false;

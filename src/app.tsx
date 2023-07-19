@@ -20,7 +20,7 @@ const App = () => {
       <AppLoader>
         <NavBar />
         <Switch>
-          <Route path="/login" component={Login} />
+          <Route path="/login/:param?" component={Login} />
           <Route path="/logout" component={Logout} />
           {/* <Route path="/users/:userId?/edit" component={Users} /> */}
           <ProtectedRout path="/users/:userId?" component={Users} />

@@ -92,6 +92,7 @@ const FormComponent = ({
   }, []);
 
   const clonedElements = React.Children.map(children, (child) => {
+    if (child == null) return null;
     const type = typeof child.type;
     let config = {};
     // пришёл элемент формы

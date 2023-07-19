@@ -50,7 +50,7 @@ const LoginForm = () => {
     try {
       //await login(data);
       dispatch(login(data));
-      console.log(history.location.state);
+      //console.log(history.location.state);
       history.push(
         history.location.state && history.location.state.from && history.location.state.from.pathname
           ? history.location.state.from.pathname

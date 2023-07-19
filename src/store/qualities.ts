@@ -30,7 +30,7 @@ const { actions, reducer: qualitiesReducer } = qualitiesSlice;
 const { recived, qualitiesRequested, qualitiesRequestFailed } = actions;
 
 function isOutDated(date) {
-  console.log('isOutDated?', Date.now(), date, Date.now() - date > 10 * 60 * 1000);
+  // console.log('isOutDated?', Date.now(), date, Date.now() - date > 10 * 60 * 1000);
   return Date.now() - date > 10 * 60 * 1000;
 }
 
