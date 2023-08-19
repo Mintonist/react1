@@ -12,6 +12,10 @@ const myAxios = axios.create();
 myAxios.interceptors.request.use(
   async function (config) {
     console.log('config.url', config.url);
+    const expireDate = localStorageService.getExpiresDate();
+    const refreshToken = localStorageService.getRefreshToken();
+    const isExpire = refreshToken && expireDate < Date.now();
+
     //подмена url для firebase
     if (CONFIG.IS_FIREBASE) {
       const containEndSlash = /\/$/gi.test(config.url);
@@ -23,9 +27,7 @@ myAxios.interceptors.request.use(
         config.url = config.url + '.json';
       }
 
-      const expireDate = localStorageService.getExpiresDate();
-      const refreshToken = localStorageService.getRefreshToken();
-      if (refreshToken && expireDate < Date.now()) {
+      if (isExpire) {
         const data = await authService.refresh();
 
         localStorageService.setTokens({
@@ -33,6 +35,22 @@ myAxios.interceptors.request.use(
           idToken: data.id_token,
           experiesIn: data.expires_in,
           localId: data.user_id,
+        });
+      }
+
+      const accessToken = localStorageService.getAccessToken();
+      if (accessToken) {
+        config.params = { ...config.params, auth: accessToken };
+      }
+    } else {
+      if (isExpire) {
+        const data = await authService.refresh();
+
+        localStorageService.setTokens({
+          refreshToken: data.refreshToken,
+          accessToken: data.accessToken,
+          experiesIn: data.experiesIn,
+          userId: data.userId,
         });
       }
 

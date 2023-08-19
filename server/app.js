@@ -66,7 +66,7 @@ async function start() {
     await mongoose.connect(config.get('mongoUrl'));
     console.log(chalk.yellow(`MongoDB connected!`));
   } catch (e) {
-    condole.log('ERROR', e.message);
+    console.log('ERROR', e.message);
     process.exit(1);
   }
   app.listen(PORT, () => {
