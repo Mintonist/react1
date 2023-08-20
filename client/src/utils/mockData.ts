@@ -12,14 +12,16 @@ const useMockData = () => {
 
   const initialized = async () => {
     try {
-      for (let user of users) {
-        await httpService.put(CONFIG.API_URL + 'user/' + user._id, user);
-      }
-      for (let prof of professions as Array<IProfession>) {
-        await httpService.put(CONFIG.API_URL + 'profession/' + prof._id, prof);
-      }
-      for (let q of qualities as Array<IQuality>) {
-        await httpService.put(CONFIG.API_URL + 'quality/' + q._id, q);
+      if (CONFIG.IS_FIREBASE) {
+        for (let user of users) {
+          await httpService.put(CONFIG.API_FIREBASE_URL + 'user/' + user._id, user);
+        }
+        for (let prof of professions as Array<IProfession>) {
+          await httpService.put(CONFIG.API_FIREBASE_URL + 'profession/' + prof._id, prof);
+        }
+        for (let q of qualities as Array<IQuality>) {
+          await httpService.put(CONFIG.API_FIREBASE_URL + 'quality/' + q._id, q);
+        }
       }
     } catch (err) {
       setError(err);

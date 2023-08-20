@@ -11,12 +11,12 @@ const myAxios = axios.create();
 
 myAxios.interceptors.request.use(
   async function (config) {
-    console.log('config.url', config.url);
+    //console.log('config.url', config.url);
     const expireDate = localStorageService.getExpiresDate();
     const refreshToken = localStorageService.getRefreshToken();
     const isExpire = refreshToken && expireDate < Date.now();
 
-    //подмена url для firebase
+    // подмена url для firebase
     if (CONFIG.IS_FIREBASE) {
       const containEndSlash = /\/$/gi.test(config.url);
       if (containEndSlash) {
@@ -44,19 +44,20 @@ myAxios.interceptors.request.use(
       }
     } else {
       if (isExpire) {
+        //console.log('myAxios.interceptors.request.use');
         const data = await authService.refresh();
-
+        console.log('myAxios.interceptors.request.use', data);
         localStorageService.setTokens({
           refreshToken: data.refreshToken,
-          accessToken: data.accessToken,
+          idToken: data.accessToken,
           experiesIn: data.experiesIn,
-          userId: data.userId,
+          localId: data.userId,
         });
       }
 
       const accessToken = localStorageService.getAccessToken();
       if (accessToken) {
-        config.params = { ...config.params, auth: accessToken };
+        config.headers.Authorization = 'Bearer ' + accessToken;
       }
     }
     return config;
@@ -75,8 +76,9 @@ myAxios.interceptors.response.use(
   (res) => {
     if (CONFIG.IS_FIREBASE) {
       res.data = { content: transformData(res.data) };
+    } else {
+      res.data = { content: res.data };
     }
-    //console.log('data', res);
     return res;
   },
   (err) => {

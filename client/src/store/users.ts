@@ -1,4 +1,5 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
+import { CONFIG } from '../config';
 import authService from '../services/auth.service';
 import localStorageService from '../services/localstorage.service';
 import userService from '../services/user.service';
@@ -100,21 +101,42 @@ export const signUp =
   async (dispatch) => {
     dispatch(authRequested());
     try {
-      const data = await authService.register({ email, password });
+      const data = await authService.register({ email, password, ...rest });
 
-      localStorageService.setTokens(data);
+      if (CONFIG.IS_FIREBASE) {
+        console.log('users.signUp', data);
+        localStorageService.setTokens({
+          refreshToken: data.refresh_token,
+          idToken: data.id_token,
+          experiesIn: data.expires_in,
+          localId: data.user_id,
+        });
+        //localStorageService.setTokens(data);
 
-      dispatch(authRequestSuccess({ userId: data.localId }));
+        dispatch(authRequestSuccess({ userId: data.localId }));
 
-      dispatch(
-        createUser({
-          _id: data.localId,
-          email,
-          rate: randomInt(0, 10),
-          completedMeetings: randomInt(0, 100),
-          ...rest,
-        })
-      );
+        dispatch(
+          createUser({
+            _id: data.localId,
+            email,
+            rate: randomInt(0, 10),
+            completedMeetings: randomInt(0, 100),
+            ...rest,
+          })
+        );
+      } else {
+        console.log('users.signUp', data);
+        localStorageService.setTokens({
+          refreshToken: data.refreshToken,
+          idToken: data.accessToken,
+          experiesIn: data.experiesIn,
+          localId: data.userId,
+        });
+        //localStorageService.setTokens(data);
+
+        dispatch(authRequestSuccess({ userId: data.userId }));
+        //history.push('/users');
+      }
     } catch (error) {
       dispatch(authRequestFailed(error.message));
     }
@@ -137,9 +159,30 @@ export const login =
     try {
       const data = await authService.login({ email, password });
 
-      localStorageService.setTokens(data);
+      if (CONFIG.IS_FIREBASE) {
+        console.log('users.login', data);
+        localStorageService.setTokens({
+          refreshToken: data.refresh_token,
+          idToken: data.id_token,
+          experiesIn: data.expires_in,
+          localId: data.user_id,
+        });
+        //localStorageService.setTokens(data);
 
-      dispatch(authRequestSuccess({ userId: data.localId }));
+        dispatch(authRequestSuccess({ userId: data.localId }));
+      } else {
+        console.log('users.login', data);
+        localStorageService.setTokens({
+          refreshToken: data.refreshToken,
+          idToken: data.accessToken,
+          experiesIn: data.experiesIn,
+          localId: data.userId,
+        });
+        //localStorageService.setTokens(data);
+
+        dispatch(authRequestSuccess({ userId: data.userId }));
+        //history.push('/users');
+      }
     } catch (error) {
       const { code, message } = error.response.data.error;
       if (code === 400) {

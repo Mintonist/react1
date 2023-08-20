@@ -3,7 +3,7 @@ import httpService from './http.service';
 import { CONFIG } from '../config';
 import api from '../api/index.js';
 
-const endpoint = CONFIG.API_URL + 'profession/';
+const endpoint = (CONFIG.IS_FIREBASE ? CONFIG.API_FIREBASE_URL : CONFIG.API_URL) + 'profession/';
 
 const professionService = {
   // update: async (id, content) => {
@@ -32,8 +32,10 @@ const professionService = {
   //   return data;
   // },
   fetchAll: async () => {
-    if (CONFIG.IS_FIREBASE) {
+    // console.log('professionService.fetchAll()');
+    if (CONFIG.IS_SERVER) {
       const { data } = await httpService.get(endpoint);
+      // console.log('professionService.fetchAll()', data);
       return data;
     } else {
       const data = { content: null };

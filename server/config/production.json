@@ -1,0 +1,6 @@
+{
+  "port": 8080,
+  "mongoUrl": "mongodb+srv://mintonist:wkOMCKzC6WqDgyug@cluster0.ktewaro.mongodb.net/app?retryWrites=true&w=majority",
+  "accessSecret": "super secret from backend",
+  "refreshSecret": "super refresh key"
+}

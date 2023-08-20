@@ -3,11 +3,11 @@ import httpService from './http.service';
 import { CONFIG } from '../config';
 import api from '../api/index.js';
 
-const endpoint = CONFIG.API_URL + 'user/';
+const endpoint = (CONFIG.IS_FIREBASE ? CONFIG.API_FIREBASE_URL : CONFIG.API_URL) + 'user/';
 
 const userService = {
   update: async (id, content) => {
-    if (CONFIG.IS_FIREBASE) {
+    if (CONFIG.IS_SERVER) {
       const { data } = await httpService.put(endpoint + id, content);
       console.log('userService.update data:', content, data);
       return data;
@@ -18,7 +18,7 @@ const userService = {
     }
   },
   get: async (id) => {
-    if (CONFIG.IS_FIREBASE) {
+    if (CONFIG.IS_SERVER) {
       const { data } = await await httpService.get(endpoint + id);
       return data;
     } else {
@@ -28,7 +28,7 @@ const userService = {
     }
   },
   add: async (content) => {
-    if (CONFIG.IS_FIREBASE) {
+    if (CONFIG.IS_SERVER) {
       const { data } = await httpService.put(endpoint + content._id, content);
       return data;
     } else {
@@ -38,7 +38,7 @@ const userService = {
     }
   },
   delete: async (id) => {
-    if (CONFIG.IS_FIREBASE) {
+    if (CONFIG.IS_SERVER) {
       const { data } = await httpService.delete(endpoint, id);
       return data;
     } else {
@@ -48,7 +48,7 @@ const userService = {
     }
   },
   fetchAll: async () => {
-    if (CONFIG.IS_FIREBASE) {
+    if (CONFIG.IS_SERVER) {
       const { data } = await httpService.get(endpoint);
       return data;
     } else {

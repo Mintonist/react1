@@ -33,7 +33,6 @@ const FormComponent = ({
       if (target) {
         //--> понять синтаксис квадратных скобок для [target.name] - это налаог образения к полю объекта: obj.name ~ obj["name"]
         setData((prevState) => ({ ...prevState, [target.name]: target.value }));
-        console.log('handleChange', data, target);
       }
     },
     [setData]

@@ -3,7 +3,7 @@ import httpService from './http.service';
 import { CONFIG } from '../config';
 import api from '../api/index.js';
 
-const endpoint = CONFIG.API_URL + 'quality/';
+const endpoint = (CONFIG.IS_FIREBASE ? CONFIG.API_FIREBASE_URL : CONFIG.API_URL) + 'quality/';
 
 const qualityService = {
   // update: async (id, content) => {
@@ -32,7 +32,7 @@ const qualityService = {
   //   return data;
   // },
   fetchAll: async () => {
-    if (CONFIG.IS_FIREBASE) {
+    if (CONFIG.IS_SERVER) {
       const { data } = await httpService.get(endpoint);
       return data;
     } else {
